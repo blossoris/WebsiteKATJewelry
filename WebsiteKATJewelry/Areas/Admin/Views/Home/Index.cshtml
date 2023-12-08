@@ -1,0 +1,126 @@
+﻿@model IEnumerable<WebsiteKATJewelry.Areas.Admin.Models.RevenueViewModel>
+@using System.Globalization
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@{
+	ViewBag.Title = "Trang chủ";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="card">
+	<div class="card-body">
+		@if (Session["Username"] != null)
+		{
+			if (TempData["SuccessMessage"] != null)
+			{
+				<div class="alert alert-success" id="success-alert">
+					<button type="button" aria-hidden="true" class="close" id="close-success-alert">×</button>
+					<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+				</div>
+			}
+			<h4 class="card-title">Doanh thu theo Tháng</h4>
+			<div class="card-body table-full-width table-responsive ">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					<th>
+						Tháng
+					</th>
+
+					<th>
+						Doanh thu
+					</th>
+					<thead>
+					<tbody>
+						@foreach (var item in ViewBag.RevenueByMonth)
+						{
+							<tr>
+								<td>
+									@item.Month
+								</td>
+								<td>
+									@Html.FormatValue(item.Revenue, "{0:#,##0}")
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+			<h4 class="card-title"> Biểu đồ doanh thu theo Tháng </h4><div class="card-body">
+				<canvas id="barChart" width="400" height="200"></canvas>
+			</div>
+		}
+		else
+		{
+			<h4>Vui lòng đăng nhập để tiếp tục</h4>
+		}
+	</div>
+</div>
+
+
+	@section scripts {
+		<script>
+		var revenueByMonth = @Html.Raw(Json.Encode(ViewBag.RevenueByMonth));
+
+        console.log("Length of revenueByMonth:", revenueByMonth.length);
+
+        if (revenueByMonth.length > 0) {
+            var labels = revenueByMonth.map(item => item.Month + '/' + item.Year);
+            var data = revenueByMonth.map(item => item.Revenue);
+
+            console.log("Labels:", labels);
+            console.log("Data:", data);
+
+			var ctx = document.getElementById('barChart').getContext('2d');
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh thu theo Tháng',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return value.toLocaleString(); // Format y-axis labels with commas
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top', // Adjust the legend position as needed
+                            labels: {
+                                boxWidth: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.formattedValue.toLocaleString();
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error("No data available for the chart.");
+        }
+		</script>
+	}

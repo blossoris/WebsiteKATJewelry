@@ -1,0 +1,103 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<title>
+		Cửa hàng trang sức bạc tại TPHCM đẹp, cao cấp -  KaT Jewelry
+	</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="author" content="">
+	<meta name="keywords" content="KaT Jewelry chuyên thiết kế và bán trang sức bạc 925 với kiểu dáng hướng ngoại, mộc mạc nhưng sang trọng. KaT còn nhận đặt trang sức vàng 10k, 14k, 18k, vàng trắng theo yêu cầu. Hãy khoác lên mình nét dẹp độc nhất cùng KaT Jewelry">
+	<meta name="description" content="Chuỗi cửa hàng trang sức bạc tại Tphcm KaT Jewelry chuyên cung cấp các loại trang sức ✅ Cao cấp ✅Độc đáo ✅Cá tính ✅Làm sáng miễn phí trọn đời.">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="icon" href="~/Images/logo.png" type="image/x-icon">
+
+	<link rel="stylesheet" type="text/css" href="~/Layout/css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="~/Layout/icomoon/icomoon.css">
+	<link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="~/Layout/css/vendor.css">
+	<link rel="stylesheet" type="text/css" href="~/Layout/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+	<!-- script
+	================================================== -->
+	<script src="~/Layout/js/modernizr.js"></script>
+	<style type="text/css">
+		#btn-back-to-top {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			display: none;
+		}
+	</style>
+	
+</head>
+<body>
+	<button type="button"
+			class="btn btn-danger btn-floating btn-lg"
+			id="btn-back-to-top">
+		<i class="fas fa-arrow-up"></i>
+	</button>
+	<div class="preloader-wrapper">
+		<div class="preloader">
+		</div>
+	</div>
+
+
+	@Html.Action("NavPartial", "KAT")
+
+
+	@RenderSection("Slider", required: false)
+	@if (ViewBag.Title != "TRANG CHỦ")
+	{
+		<section class="site-banner jarallax min-height300 padding-large" style="background: url('../../Images/banner.jpg') no-repeat;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1 class="page-title">@ViewBag.Title</h1>
+						<div class="breadcrumbs">
+							<span class="item">
+								<a href="@Url.Action("Index", "KAT")">Trang chủ /</a>
+							</span>
+							<span class="item">@ViewBag.Title</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	}
+
+
+	@RenderBody()
+
+	<hr>
+	@Html.Action("FooterPArtial", "KAT")
+
+	<script src="~/Layout/js/jquery-1.11.0.min.js"></script>
+	<script src="~/Layout/js/plugins.js"></script>
+	<script src="~/Layout/js/script.js"></script>
+	<script>
+		$(document).ready(function () {
+			// Ẩn thông báo sau 3 giây
+			setTimeout(function () {
+				$("#danger-alert").fadeOut('slow');
+			}, 3000); // 3000ms = 3 giây
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			// Bắt sự kiện bấm nút đóng
+			$("#close-success-alert").click(function () {
+				$("#success-alert").hide(); // Ẩn thông báo khi bấm nút đóng
+			});
+		});
+	</script>
+</body>
+</html>

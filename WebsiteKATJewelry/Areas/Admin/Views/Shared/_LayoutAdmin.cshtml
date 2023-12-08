@@ -1,0 +1,311 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>KAT Admin</title>
+	<!-- plugins:css -->
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
+	<!-- endinject -->
+	<!-- Plugin css for this page -->
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/jvectormap/jquery-jvectormap.css">
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/owl-carousel-2/owl.carousel.min.css">
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+	<!-- End plugin css for this page -->
+	<!-- inject:css -->
+	<!-- endinject -->
+	<!-- Layout styles -->
+	<link rel="stylesheet" href="~/LayoutAdmin/assets/css/style.css">
+	<!-- End layout styles -->
+	<link rel="shortcut icon" href="~/Images/logo.png" />
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			color:white
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font-family: 'Arial', sans-serif;
+			/* Specify the font for headings */
+		}
+
+		/* Add more styles as needed */
+	</style>
+</head>
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_sidebar.html -->
+		<nav class="sidebar sidebar-offcanvas" id="sidebar">
+			<div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+				<a class="sidebar-brand brand-logo" href=""><img src="~/Images/logo-darktheme.png" alt="logo" /></a>
+				<a class="sidebar-brand brand-logo-mini" href=""><img src="~/Images/logo-darktheme_mini.png" alt="logo" /></a>
+			</div>
+			<ul class="nav">
+				<li class="nav-item profile">
+					<div class="profile-desc">
+						<div class="profile-pic">
+
+							@if (Session["Username"] != null)
+							{
+								<div class="count-indicator">
+									<img class="img-xs rounded-circle " src="~/LayoutAdmin/assets/images/faces/face8.jpg" alt="">
+									<span class="count bg-success"></span>
+								</div>
+								<div class="profile-name">
+									<h5 class="mb-0 font-weight-normal">@Session["Name"].ToString()</h5>
+									<span>@Session["Username"].ToString()</span>
+								</div>
+							}
+						</div>
+					</div>
+				</li>
+
+				@if (Session["Username"] != null)
+				{
+					<li class="nav-item nav-category">
+						<span class="nav-link">Quản lý</span>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Home"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Home")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Trang chủ</span>
+						</a>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "SP"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "SP")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Sản phẩm</span>
+						</a>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Customer"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Customer")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Khách hàng</span>
+						</a>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Category"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Category")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Danh mục</span>
+						</a>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Type"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Type")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Loại</span>
+						</a>
+					</li>
+					<li class="nav-item menu-items">
+						<a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Bill"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Bill")">
+							<span class="menu-icon">
+								<i class="mdi mdi-view-dashboard"></i>
+							</span>
+							<span class="menu-title">Đơn hàng</span>
+						</a>
+					</li>
+				}
+			</ul>
+		</nav>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_navbar.html -->
+			<nav class="navbar p-0 fixed-top d-flex flex-row">
+				<div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+					<a class="navbar-brand brand-logo-mini" href="index.html"><img src="~/LayoutAdmin/assets/images/logo-mini.svg" alt="logo" /></a>
+				</div>
+				<div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+					<button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+						<span class="mdi mdi-menu"></span>
+					</button>
+					
+					<ul class="navbar-nav navbar-nav-right">
+						@if (Session["Username"] != null)
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+									<div class="navbar-profile">
+										<img class="img-xs rounded-circle" src="~/LayoutAdmin/assets/images/faces/face8.jpg" alt="">
+										<p class="mb-0 d-none d-sm-block navbar-profile-name">@Session["Name"].ToString()</p>
+										<i class="mdi mdi-menu-down d-none d-sm-block"></i>
+									</div>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+									<h6 class="p-3 mb-0">Profile</h6>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item preview-item" href="@Url.Action("Details", "Home")">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-dark rounded-circle">
+												<i class="mdi mdi-information text-success"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<p class="preview-subject mb-1">Thông tin</p>
+										</div>
+									</a>
+									<a class="dropdown-item preview-item" href="@Url.Action("ChangePassAd", "Home")">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-dark rounded-circle">
+												<i class="mdi mdi-key-change text-warning"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<p class="preview-subject mb-1">Đổi mật khẩu</p>
+										</div>
+									</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item preview-item" href="@Url.Action("LogOut", "Home")">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-dark rounded-circle">
+												<i class="mdi mdi-logout text-danger"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<p class="preview-subject mb-1">Đăng xuất</p>
+										</div>
+									</a>
+								</div>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link" href="@Url.Action("LoginAd", "Home")">
+										<p class="mb-0 d-none d-sm-block navbar-profile-name">Đăng nhập</p>
+								</a>
+							</li>
+						}
+					</ul>
+					<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+						<span class="mdi mdi-format-line-spacing"></span>
+					</button>
+				</div>
+			</nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+					@RenderBody()
+					@RenderSection("scripts", required: false)
+				</div>
+				<!-- content-wrapper ends -->
+				<!-- partial:partials/_footer.html -->
+				<footer class="footer">
+					<div class="d-sm-flex justify-content-center justify-content-sm-between">
+						<span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+						<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Website nhằm phục vụ cho mục đích học tập!</span>
+					</div>
+				</footer>
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<script src="~/LayoutAdmin/assets/vendors/js/vendor.bundle.base.js"></script>
+	<!-- endinject -->
+	<!-- Plugin js for this page -->
+	<script src="~/LayoutAdmin/assets/vendors/chart.js/Chart.min.js"></script>
+	<script src="~/LayoutAdmin/assets/vendors/progressbar.js/progressbar.min.js"></script>
+	<script src="~/LayoutAdmin/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+	<script src="~/LayoutAdmin/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="~/LayoutAdmin/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+	<!-- End plugin js for this page -->
+	<!-- inject:js -->
+	<script src="~/LayoutAdmin/assets/js/off-canvas.js"></script>
+	<script src="~/LayoutAdmin/assets/js/hoverable-collapse.js"></script>
+	<script src="~/LayoutAdmin/assets/js/misc.js"></script>
+	<script src="~/LayoutAdmin/assets/js/settings.js"></script>
+	<script src="~/LayoutAdmin/assets/js/todolist.js"></script>
+	<!-- endinject -->
+	<!-- Custom js for this page -->
+	<script src="~/LayoutAdmin/assets/js/dashboard.js"></script>
+	<!-- End custom js for this page -->
+</body>
+</html>
+<style type="text/css">
+	/*Định dạng phân trang*/
+	.paging {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		justify-content: center;
+	}
+
+		.paging li {
+							margin: 0 2px;
+						}
+
+		.paging a {
+							text-decoration: none;
+							padding: 5px 10px;
+							background-color: black;
+							color: #d3c3e3;
+			border: 1px solid #a29bfe;
+			border-radius: 3px;
+						}
+
+			.paging a:hover {
+				background-color: #b19cd9;
+			}
+	/*Định dạng số trang*/
+	.page-info {
+						font-size: 14px;
+					color: wheat;
+						font-weight: bold;
+						padding-right: 10px;
+					}
+	/*Định dạng kích thước trang*/
+	.product-search-form p {
+						/* Định dạng cho đoạn văn bản "Kích thước trang" */
+						font-weight: bold;
+						padding-left: 10px;
+					}
+
+	.product-search-form select {
+					/* Định dạng cho dropdown "size" */
+					padding: 5px;
+					border: 1px solid #ccc;
+		border-radius: 3px;
+						background-color: #fff;
+	}
+</style>
+<script>
+	$(document).ready(function () {
+						// Ẩn thông báo sau 3 giây
+						setTimeout(function () {
+			$("#success-alert").fadeOut('slow');
+						}, 3000); // 3000ms = 3 giây
+					});
+	
+</script>
+<script>
+	$(document).ready(function () {
+		// Ẩn thông báo sau 3 giây
+		setTimeout(function () {
+			$("#danger-alert").fadeOut('slow');
+		}, 3000); // 3000ms = 3 giây
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		// Bắt sự kiện bấm nút đóng
+		$("#close-success-alert").click(function () {
+			$("#success-alert").hide(); // Ẩn thông báo khi bấm nút đóng
+		});
+	});
+</script>

@@ -1,0 +1,127 @@
+﻿@model PagedList.IPagedList<WebsiteKATJewelry.Models.KhachHang>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Quản lý khách hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@helper Truncate(string s, int length)
+{
+	if (s.Length < length)
+	{
+		@s
+	}
+	else
+	{
+		@s.Substring(0, length)<text>...</text>
+	}
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success separator hidden-lg" id="success-alert">
+		<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+	</div>
+}
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card strpied-tabled-with-hover">
+					<div class="card-header ">
+						<h4 class="card-title">Danh sách khách hàng</h4>
+						@*<p class="card-category">@Html.ActionLink("Thêm mới", "Create")</p>*@
+					</div>
+					<div class="card-header ">
+						@using (Html.BeginForm("Index", "Customer", FormMethod.Get, new { @class = "form-inline" }))
+						{
+							<div class="form-group">
+								<label>Tìm:</label><input type="Text" class="form-control mx-sm-3" value="@ViewBag.Keyword" name="searchString" placeholder="Nhập họ tên">
+								<button type="submit" class="btn btn-light">
+									<i class="mdi mdi-search-web"></i>
+								</button>
+							</div><hr />
+						}
+					</div>
+					<div class="card-body table-full-width table-responsive">
+						<table class="table table-hover table-striped table-bordered">
+							<thead>
+							<th>
+								@Html.ActionLink("Họ tên", "Index", new { sortProperty = "HoTen", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+							
+							<th>
+								@Html.ActionLink("Địa chỉ", "Index", new { sortProperty = "DiaChi", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+							<th>
+								@Html.ActionLink("Số điện thoại", "Index", new { sortProperty = "SDT", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+							<th>
+								@Html.ActionLink("Email", "Index", new { sortProperty = "Email", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+							<th></th>
+							<thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>
+											@Truncate(item.HoTen, 30)
+										</td>
+										
+										<td>
+											@Truncate(item.DiaChi, 100)
+										</td>
+										<td>
+											@Truncate(item.SDT, 11)
+										</td>
+										<td>
+											@Truncate(item.Email, 15)
+										</td>
+										<td>
+											<a href="@Url.Action("Details", new { id = item.MaKH})" class="badge badge-success" role="button">Xem</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+								@using (Html.BeginForm("Index", "Customer", FormMethod.Get, new { @class = "product-search-form" }))
+								{
+									<p>
+										Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+									</p>
+
+									@Html.Hidden("page", (object)ViewBag.Page)
+									@Html.Hidden("sortProperty", (object)ViewBag.SortProperty)
+									@Html.Hidden("sortOrder", (object)ViewBag.SortOrder)
+									@Html.Hidden("searchString", (object)ViewBag.Keyword)
+								}
+							</div>
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+								<span class="page-info">
+									Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+								</span>
+							</div>
+						</div>
+						@Html.PagedListPager(Model, page => Url.Action("Index", new
+						{
+							page,
+							size = ViewBag.CurrentSize,
+							sortProperty = ViewBag.SortProperty,
+							sortOrder = ViewBag.SortOrder,
+							searchString = ViewBag.Keyword
+						}), new PagedListRenderOptions
+						{
+							LiElementClasses = new[] { "paging" },
+							UlElementClasses = new[] { "paging" }
+						})
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

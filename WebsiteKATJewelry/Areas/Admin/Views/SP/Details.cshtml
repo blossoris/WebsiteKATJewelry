@@ -1,0 +1,107 @@
+﻿@model WebsiteKATJewelry.Areas.Admin.Models.Details
+
+@{
+	ViewBag.Title = "Quản lý sản phẩm";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>CHI TIẾT SẢN PHẨM</h4>
+<style type="text/css">
+	img {
+		width: 200px;
+	}
+
+	.dl-horizontal dt {
+		font-weight: bold;
+		height: 0px;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Tên sản phẩm:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SanPham.TenSP)
+		</dd>
+		<dt>
+			Loại:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SanPham.LoaiSP.TenLoai)
+		</dd>
+		<dt>
+			Danh mục:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SanPham.DanhMuc.TenDM)
+		</dd>
+		<dt>
+			Mô tả:
+		</dt>
+		<dd>
+			@Html.Raw(@Model.SanPham.Mota.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))
+		</dd>
+		<dt>
+			Story:
+		</dt>
+		<dd>
+			@Html.Raw(@Model.SanPham.Story.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))
+		</dd>
+		<dt>
+			Ảnh:
+		</dt>
+		<dd>
+			<img src="~/Images/@Model.SanPham.AnhBia" alt=" @Model.SanPham.TenSP">
+		</dd>
+		<dt>
+			Giá:
+		</dt>
+		<dd>
+			@Html.FormatValue(@Model.SanPham.GiaSP, "{0:#,##0}") VNĐ
+		</dd>
+		<dt>
+			Ngày nhập:
+		</dt>
+		<dd>
+			@Html.FormatValue(@Model.SanPham.NgayNhap, "{0:dd/MM/yyyy}")
+		</dd>
+		<dt>
+			Số lượng bán:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SanPham.SoLuongBan)
+		</dd>
+		<dt>
+			Số lượng tồn:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SanPham.SoLuongTon)
+		</dd>
+		<dt>
+			Danh sách ảnh:
+		</dt>
+		<dd>
+			@foreach (var item in Model.AnhSPs)
+			{
+				<div class="col-3">
+					<div class="view overlay rounded z-depth-1 gallery-item hoverable">
+						<img src="~/Images/@item.HinhAnh"
+							 class="img-fluid">
+						<div class="mask rgba-white-slight"></div>
+					</div>
+				</div>
+			}
+		</dd>
+	</dl>
+</div>
+<p>
+	@Html.ActionLink("Edit", "Edit", new { id = Model.SanPham.MaSP }) |
+	@Html.ActionLink("VỀ TRANG QUẢN LÝ SẢN PHẨM", "Index")
+</p>

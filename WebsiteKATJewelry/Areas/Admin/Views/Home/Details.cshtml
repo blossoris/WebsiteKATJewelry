@@ -1,0 +1,54 @@
+﻿
+
+@model WebsiteKATJewelry.Models.Admin
+
+@{
+	ViewBag.Title = "Tài khoản";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success separator hidden-lg" id="success-alert">
+		<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+	</div>
+}
+<div>
+	<h4>Admin</h4>
+	<hr />
+	<dl class="dl-horizontal">
+
+		<dt>
+			Họ tên
+		</dt>
+
+		<dd>
+			@Model.HoTen
+		</dd>
+
+		<dt>
+			Email
+		</dt>
+
+		<dd>
+			@Model.Email
+		</dd>
+
+		<dt>
+			Số điện thoại
+		</dt>
+
+		<dd>
+			@Model.SDT
+		</dd>
+
+	</dl>
+</div>
+<script>
+	$(document).ready(function () {
+		// Ẩn thông báo sau 3 giây
+		setTimeout(function () {
+			$("#success-alert").fadeOut('slow');
+		}, 3000); // 3000ms = 3 giây
+	});
+</script>
+

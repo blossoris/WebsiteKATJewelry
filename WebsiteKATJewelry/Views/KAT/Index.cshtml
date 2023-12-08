@@ -1,0 +1,242 @@
+﻿@using WebsiteKATJewelry.Models;
+@{
+	ViewBag.Title = "TRANG CHỦ";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+@section Slider{
+	@Html.Action("SliderPartial", "KAT")
+}
+@helper Truncate(string s, int length)
+{
+	if (s.Length < length)
+	{
+		@s
+	}
+	else
+	{
+		@s.Substring(0, length)<text>...</text>
+	}
+}
+<!-- Add these scripts to include the Swiper library -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<div class="container padding-large">
+	<div class="row">
+		<div class="col-md-8 col-sm-6">
+			<a href="https://m.me/katjewelry" class="ab-image-2">
+				<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about_1.jpg?1699007615400" alt="Đeo trang sức là cách thể hiện bạn mà không cần một lời nói nào." class="img-responsive center-block" />
+			</a>
+
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<a href="https://m.me/katjewelry">
+				<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about_2.jpg?1699007615400" alt="Đeo trang sức là cách thể hiện bạn mà không cần một lời nói nào." class="img-responsive center-block" />
+			</a>
+			<div class="hidden-sm hidden-xs">
+				<h3 class="padding-xsmall no-padding-bottom">Đeo trang sức là cách thể hiện bạn mà không cần một lời nói nào.</h3>
+				<div style="font-size:15px;">
+					Cuộc đời đó có bao lâu mà hững hờ, hãy cứ đeo trang sức như chưa từng được đeo.
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<section id="quotation" class="align-center padding-xsmall no-padding-bottom">
+	<div class="inner-content">
+		<blockquote>
+			<q>
+				Wearing jewelry is the way to express who you are...  without saying a word.
+			</q>
+		</blockquote>
+	</div>
+</section>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- LightWidget WIDGET -->
+			<p class="lik" style="margin-top:40px">
+				<script type='text/javascript'>
+					var timer2 = undefined;
+					timer2 = setTimeout(() => {
+						//<![CDATA[
+						function loadCSS(e, t, n) {
+							"use strict"; var i = window.document.createElement("iframe");
+							var o = t || window.document.getElementsByClassName("lik")[0];
+							i.width = "100%"; i.height = "400"; i.frameborder = "0"; i.style = "border:0;";
+							i.allowfullscreen = ""; i.src = e; i.media = "only x"; o.parentNode.insertBefore(i, o);
+							setTimeout(function () { i.media = n || "all" })
+						} loadCSS("//cdn.lightwidget.com/widgets/54a6c9f5676a5e73ba87621ab34eac82.html");
+						//]]>
+						timer2 = undefined;
+					}, 7000)
+				</script>
+			</p>
+
+		</div>
+		<div class="section-header">
+			<h4 class="inline-block section-title text-dark">Trang sức bạc thành lập từ 2012</h4>
+		</div>
+
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-pull-8">
+			<div class="row">
+				<div class="col-md-12 col-sm-6 padding-xsmall">
+					<a href="https://m.me/katjewelry">
+						<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_2.jpg?1699007615400" data-lazyload="//bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_2.jpg?1699007615400" alt="KaT Jewelry - Trang sức bạc 925 - Design & made to order" class="img-responsive center-block" />
+					</a>
+				</div>
+				<div class="col-md-12 col-sm-6 padding-xsmall">
+					<a href="https://m.me/katjewelry">
+						<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_3.jpg?1699007615400" data-lazyload="//bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_3.jpg?1699007615400" alt="KaT Jewelry - Trang sức bạc 925 - Design & made to order" class="img-responsive center-block" />
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-push-4 padding-xsmall">
+			<a href="https://m.me/katjewelry">
+				<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_1.jpg?1699007615400" data-lazyload="//bizweb.dktcdn.net/100/302/551/themes/758295/assets/service_about3_1.jpg?1699007615400" alt="KaT Jewelry - Trang sức bạc 925 - Design & made to order" class="img-responsive center-block" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<section id="flash-sales" class="product-store padding-small margin-small">
+
+	<div class="container border-top">
+		<div class="section-header">
+			<h2 class="section-title">SẢN PHẨM MỚI</h2>
+		</div>
+		<div class="swiper product-swiper flash-sales overflow-hidden">
+
+			<div class="swiper-wrapper">
+				@foreach (var proc in Model)
+				{
+					<div class="swiper-slide text-center">
+						<div class="product-item">
+							<img src="~/Images/@proc.AnhBia" alt="@proc.TenSP" class="product-image image-holder zoom-effect">
+							<div class="cart-concern text-center" style="margin:auto">
+								<div class="cart-button text-center" style="margin:auto">
+									<button type="button" style="margin:auto" class="btn-wrap cart-link d-flex align-items-center">
+										<a href="@Url.Action("ThemGioHang", "Cart", new { ms = proc.MaSP, url = Request.Url.ToString() })"><i class="icon icon-shopping-cart"></i>&nbsp;add to cart <i class="icon icon-arrow-io"></i></a>
+</button>
+								</div>
+							</div>
+							<div class="product-detail">
+								<h4 class="product-title">
+									<a href="@Url.Action("SingleProduct", "Product", new { id = proc.MaSP })">@proc.TenSP</a>
+								</h4>
+								<div class="item-price text-primary" style="font-size:25px">
+									@Html.FormatValue(@proc.GiaSP, "{0:#,##0}")đ
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+			<div class="swiper-pagination"></div>
+
+		</div>
+	</div>
+</section>
+<section class="container border-top">
+	<div class="section section-testimonial">
+		<div class="container">
+			<!-- Customer Feedback Section -->
+			<div class="section-header">
+				<h2 class="inline-block text-dark section-title">Khách hàng feedback</h2>
+			</div>
+			<div class="embedsocial-hashtag" data-ref="86f180a445ce136d8b4dbe7dda720c52f61fbe0b"></div>
+			<script>
+				(function (d, s, id) {
+					var js;
+					if (d.getElementById(id)) { return; }
+					js = d.createElement(s); js.id = id;
+					js.src = "https://embedsocial.com/cdn/ht.js";
+					d.getElementsByTagName("head")[0].appendChild(js);
+				}(document, "script", "EmbedSocialHashtagScript"));
+			</script>
+		</div>
+	</div>
+</section>
+<section id="instagram" class="padding-xsmall">
+	<div class="container">
+		<p>
+			Follow On Instagram <a href="https://www.instagram.com/katjewelry/" title="link instagram trang sức bạc kat jewelry">#Katjewelry</a>
+		</p>
+		<div class="row d-flex flex-wrap justify-content-between">
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_2.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CpHpwp3OYl4/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_3.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CpCVoZtAasR/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_4.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CpKh0EsLtlX/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_7.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CqraJptJcth/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_8.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CqUeJg2JWN6/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6">
+				<figure class="zoom-effect">
+					<img src="https://bizweb.dktcdn.net/100/302/551/themes/758295/assets/instagram_image_9.jpg?1699007615400" alt="instagram" class="insta-image">
+					<a href="https://www.instagram.com/p/CqefsERJoYN/"><i class="icon icon-instagram"></i></a>
+				</figure>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	setTimeout(function () {
+		window.fbAsyncInit = function () {
+			FB.init({
+				xfbml: true,
+				version: 'v6.0'
+			});
+		};
+
+		(function (d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	}, 7000)
+</script>
+<style>
+	.section-header {
+		text-align: center;
+		margin-bottom: 5px;
+	}
+
+	/* Customer Feedback Section */
+	.embedsocial-hashtag {
+		margin-top: 20px;
+		text-align: center;
+	}
+</style>

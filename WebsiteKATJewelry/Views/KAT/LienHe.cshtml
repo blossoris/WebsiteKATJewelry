@@ -1,0 +1,75 @@
+﻿
+@{
+	ViewBag.Title = "Liên hệ";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<section class="google-map padding-small">
+	<div class="mapouter">
+		<div class="gmap_canvas">
+			<iframe src="https://www.google.com/maps/d/u/3/embed?mid=1c8Ugg_fhZKcv4dthf3UjBcmhFuPiSMk&ehbc=2E312F" width="100%" height="600"></iframe>
+		</div>
+	</div>
+</section>
+<section class="contact-information padding-large">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="section-header">
+					<h5 class="section-title">Liên hệ</h5>
+				</div>
+				<div class="contact-detail">
+					<div class="detail-list">
+						<p>
+							✔️Thương hiệu đã được đăng kí bởi cục sở hữu trí tuệ và được bảo hộ bởi pháp luật Việt Nam
+							<br />
+							✔️HOÀN TIỀN GẤP 5 LẦN nếu bạc không đủ tiêu chuẩn 925, hỗ trợ khách kiểm định (tính phí)
+							<br />
+							✔️Chất lượng được chứng minh bởi hơn 150.000 khách hàng trong 10 năm qua!
+							<br />
+							✔️Hãy chọn cho mình 1 thương hiệu trang sức bạc 925 uy tín và lâu đời để luôn chắc rằng trang sức của bạn được bảo hành trắng sáng MIỄN PHÍ VĨNH VIỄN.
+						</p>
+						<ul class="list-unstyled list-icon">
+							<li>
+								<a href="tel:0896162868"><i class="icon icon-phone"></i>089.6162.868</a>
+							</li>
+							<li>
+								<a href="mailto:contact@katjewelry.vn"><i class="icon icon-mail"></i>contact@katjewelry.vn</a>
+							</li>
+						</ul>
+					</div>
+					<div class="social-links">
+						<h3>Mạng xã hội</h3>
+						<ul class="d-flex list-unstyled">
+							<li><a href="#" class="icon icon-facebook"></a></li>
+							<li><a href="#" class="icon icon-twitter"></a></li>
+							<li><a href="#" class="icon icon-instagram"></a></li>
+							<li><a href="#" class="icon icon-youtube-play"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="contact-information">
+					<div class="section-header">
+						<h5 class="section-title">Gửi thông tin liên hệ</h5>
+					</div>
+					<form name="LienHe" method="post" class="contact-form" action="/KAT/LienHe" enctype="multipart/form-data">
+						<input type="email" name="To" hidden value="2124802010728@student.tdmu.edu.vn">
+						<div class="form-item">
+							<input type="text" minlength="2" name="Name" placeholder="Name" class="u-full-width bg-light" required>
+							<input type="email" name="From" placeholder="E-mail" class="u-full-width bg-light" required>
+							<textarea class="u-full-width bg-light" name="Notes" placeholder="Message" style="height: 180px;" required></textarea>
+						</div>
+						<label>
+							<input type="checkbox" required>
+							<span class="label-body">
+								I agree all the <a href="#">terms and conditions</a>
+							</span>
+						</label>
+						<button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Quên mật khẩu";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="login-tabs padding-small">
+	<form name="ForgotPass" method="post" class="contact-form" action="/Account/ForgotPass" enctype="multipart/form-data">
+		<div class="section-header">
+			<h4>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email.</h4>
+		</div>
+		<div class="u-full-width">
+			<label for="From">Email</label>
+			<input type="email" name="From" placeholder="Email" class="input100" required>
+		</div>
+		<button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Lấy lại mật khẩu</button>
+	</form>
+</div>
+
+<style>
+	.login-tabs {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.form-control {
+		margin-bottom: 20px;
+	}
+
+	.label {
+		display: block;
+		margin-bottom: 5px;
+	}
+
+	.input100 {
+		width: 100%;
+		padding: 10px;
+		box-sizing: border-box;
+		margin-bottom: 10px;
+	}
+
+	.error-message {
+		color: red;
+	}
+
+	.form-checkbox {
+		margin-right: 5px;
+	}
+
+	.form-label {
+		display: inline-block;
+		margin-right: 10px;
+	}
+
+	button:hover {
+		background-color: beige;
+		color: black
+	}
+</style>

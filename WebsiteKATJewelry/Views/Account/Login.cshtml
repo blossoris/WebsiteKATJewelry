@@ -1,0 +1,119 @@
+﻿@model WebsiteKATJewelry.Models.User
+@{
+	ViewBag.Title = "Đăng nhập";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div class="login-tabs padding-large">
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success separator hidden-lg" id="success-alert">
+			<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+		</div>
+	}
+	@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+	{
+		@Html.AntiForgeryToken()
+		if (ViewBag.Error != null)
+		{
+			<p class="error-message">@ViewBag.Error</p>
+		}
+		if (Request.Cookies["email"] != null && Request.Cookies["Password"] != null)
+		{
+
+			<div class="u-full-width" data-validate="Email is required">
+				@Html.LabelFor(model => model.Email, new { @class = "label" })
+				@Html.TextBoxFor(model => model.Email, new { @class = "input100", @placeholder = "Nhập email", @name = "email", @Request.Cookies["email"].Value })
+			</div>
+			<div class="u-full-width" data-validate="Password is required">
+				@Html.LabelFor(model => model.Password, new { @class = "label" })
+				@Html.PasswordFor(model => model.Password, new { @class = "input100", @placeholder = "Nhập password", @name = "pass", @Request.Cookies["Password"].Value })
+			</div>
+		}
+		else
+		{
+			<div class="u-full-width" data-validate="Email is required">
+				@Html.LabelFor(model => model.Email, new { @class = "label" })
+				@Html.TextBoxFor(model => model.Email, new { @class = "input100", @placeholder = "Nhập email", @name = "username" })
+			</div>
+
+			<div class="u-full-width" data-validate="Password is required">
+				@Html.LabelFor(model => model.Password, new { @class = "label" })
+				@Html.PasswordFor(model => model.Password, new { @class = "input100", @placeholder = "Nhập mật khẩu", @name = "Password" })
+			</div>
+		}
+		<div>
+			@Html.LabelFor(model => model.ShowPassword, new { @id = "showPasswordLabel", @class = "form-label" })
+			@Html.CheckBoxFor(model => model.ShowPassword, new { id = "showPasswordCheckbox", @class = "form-checkbox" })
+		</div>
+		<div class="text-right">
+			<a href="@Url.Action("ForgotPass", "Account")">
+				Forgot password?
+			</a>
+		</div>
+		<div>
+			<div>
+				<button type="submit" class="login100-form-btn">
+					Login
+				</button>
+			</div>
+		</div>
+		<div>
+			Không có tài khoản?
+			<a href="@Url.Action("Register", "Account")">Đăng ký</a>
+		</div>
+	}
+</div>
+<style>
+	.login-tabs {
+		max-width: 400px;
+		margin: 0 auto;
+	}
+
+	.form-control {
+		margin-bottom: 20px;
+	}
+
+	.label {
+		display: block;
+		margin-bottom: 5px;
+	}
+
+	.input100 {
+		width: 100%;
+		padding: 10px;
+		box-sizing: border-box;
+		margin-bottom: 10px;
+	}
+
+	.error-message {
+		color: red;
+	}
+
+	.form-checkbox {
+		margin-right: 5px;
+	}
+
+	.form-label {
+		display: inline-block;
+		margin-right: 10px;
+	}
+	button:hover{
+		background-color:beige;
+		color:black
+	}
+</style>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#showPasswordCheckbox').change(function () {
+			var passwordInput = $('#Password'); // Thay 'Password' bằng id của trường mật khẩu
+
+			if (this.checked) {
+				passwordInput.attr('type', 'text');
+				confirmPasswordInput.attr('type', 'text');
+			} else {
+				passwordInput.attr('type', 'password');
+				confirmPasswordInput.attr('type', 'password');
+			}
+		});
+	});
+</script>

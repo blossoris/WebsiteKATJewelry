@@ -1,0 +1,147 @@
+﻿@model WebsiteKATJewelry.Models.User
+@{
+	ViewBag.Title = "Register";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div class="login-tabs padding-large">
+	@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="row row-space">
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.Fullname, new { @class = "label" }) <p style="color:red">&nbsp;*</p>
+					@Html.TextBoxFor(model => model.Fullname, new { @class = "input--style-4", @name = "first_name" })
+					@Html.ValidationMessageFor(model => model.Fullname, "", new { @class = "error-message" })
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.Address, new { @class = "label" }) <p style="color:red">&nbsp;*</p>
+					@Html.TextBoxFor(model => model.Address, new { @class = "input--style-4", @name = "last_name" })
+					@Html.ValidationMessageFor(model => model.Address, "", new { @class = "error-message" })
+				</div>
+			</div>
+		</div>
+		<div class="row row-space">
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.Email, new { @class = "label" }) <p style="color:red">&nbsp;*</p>
+					@Html.TextBoxFor(model => model.Email, new { @class = "input--style-4", @name = "email" })
+					@Html.ValidationMessageFor(model => model.Email, "", new { @class = "error-message" })
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.PhoneNum, new { @class = "label" }) <p style="color:red">&nbsp;*</p>
+					@Html.TextBoxFor(model => model.PhoneNum, new { @class = "input--style-4", @name = "phone" })
+					@Html.ValidationMessageFor(model => model.PhoneNum, "", new { @class = "error-message" })
+				</div>
+			</div>
+		</div>
+		<div class="row row-space">
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.Password, new { @class = "label" }) <p style="color:red">&nbsp;*</p>
+					@Html.PasswordFor(model => model.Password, new { @class = "input--style-4", @name = "password" })
+					@Html.ValidationMessageFor(model => model.Password, "", new { @class = "error-message" })
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="input-group">
+					@Html.LabelFor(model => model.ConfirmPassword, new { @class = "label" })<p style="color:red">&nbsp;*</p>
+					@Html.PasswordFor(model => model.ConfirmPassword, new { @class = "input--style-4", @name = "confirm_password" })
+					@Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "error-message" })
+				</div>
+			</div>
+		</div>
+		<div class="input-group">
+			@Html.LabelFor(model => model.ShowPassword, new { @id = "showPasswordLabel", @class = "form-label" })
+			@Html.CheckBoxFor(model => model.ShowPassword, new { id = "showPasswordCheckbox", @class = "form-checkbox" })
+		</div>
+
+		<div class="p-t-15">
+			<button class="btn btn--radius-2 btn--blue" type="submit">Đăng ký</button>
+		</div>
+	}
+</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#showPasswordCheckbox').change(function () {
+				var passwordInput = $('#Password'); // Thay 'Password' bằng id của trường mật khẩu
+				var confirmPasswordInput = $('#ConfirmPassword'); // Thay 'ConfirmPassword' bằng id của trường xác nhận mật khẩu
+
+				if (this.checked) {
+					passwordInput.attr('type', 'text');
+					confirmPasswordInput.attr('type', 'text');
+				} else {
+					passwordInput.attr('type', 'password');
+					confirmPasswordInput.attr('type', 'password');
+				}
+			});
+		});
+	</script>
+<style>
+	.login-tabs {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.row {
+		display: flex;
+		margin-bottom: 15px;
+	}
+
+	.col-2 {
+		flex: 0 0 50%;
+		padding-right: 15px;
+	}
+
+	.input-group {
+		position: relative;
+		width: 100%;
+	}
+
+	.label {
+		display: block;
+		margin-bottom: 5px;
+		font-weight: bold;
+	}
+
+	.input--style-4 {
+		width: 100%;
+		padding: 10px;
+		font-size: 16px;
+	}
+
+	.error-message {
+		color: red;
+		margin-top: 5px;
+	}
+
+	/* Style for the show password checkbox */
+	.form-label {
+		margin-right: 10px;
+	}
+
+	/* Style for the submit button */
+	.btn--radius-2 {
+		display: inline-block;
+		padding: 10px 20px;
+		font-size: 16px;
+		text-align: center;
+		text-decoration: none;
+		cursor: pointer;
+		border-radius: 5px;
+		background-color: #3498db;
+		color: #ffffff;
+	}
+
+		/* Optional: Hover effect for the submit button */
+		.btn--radius-2:hover {
+			background-color: #2980b9;
+		}
+</style>

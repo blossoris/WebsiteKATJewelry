@@ -1,0 +1,65 @@
+﻿@model WebsiteKATJewelry.Models.DanhMuc
+
+@{
+	ViewBag.Title = "Quản lý danh mục";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+	.form-horizontal {
+		margin: 20px;
+	}
+
+	.control-label {
+		font-weight: bold;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 5px;
+		margin-bottom: 10px;
+	}
+
+	.btn {
+		background-color: #007BFF;
+		color: #fff;
+	}
+
+		.btn:hover {
+			background-color: #0056b3;
+		}
+
+	.text-danger {
+		color: red;
+	}
+</style>
+<h4>Thêm mới danh mục</h4>
+
+@using (Html.BeginForm("Create", "Category", FormMethod.Post, new
+{
+	@enctype = "multipart/form-data"
+}))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<div class="form-group">
+			<label class="control-label col-md-2">Tên danh mục:</label>
+			<div class="col-md-10">
+				<input type="text" size="70" name="TenDM" value="@ViewBag.TenDM" required />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Thêm" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("VỀ TRANG QUẢN LÝ DANH MỤC", "Index")
+</div>

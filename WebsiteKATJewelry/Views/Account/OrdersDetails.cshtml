@@ -1,0 +1,75 @@
+﻿@model WebsiteKATJewelry.Models.DonHang_CT
+@{
+	ViewBag.Title = "Tài khoản";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<head>
+	<style>
+		.model {
+			color: darkblue;
+		}
+	</style>
+</head>
+
+<div class="container">
+	<div class="row " style="margin-top:6rem;">
+		<div class="col-lg-6 col-md-12 col-sm-12">
+			<table class="table">
+				<tr>
+					<th colspan="2">CHI TIẾT ĐƠN HÀNG</th>
+					<p>
+						Đơn hàng  <span class="model">@Model.MaHD</span> được đặt vào lúc <span class="model">@Model.NgayMua</span><br />
+						Tình trạng hiên tại
+						@if (Model.TinhTrangDonHang == 1)
+						{
+							<span class="model">Đã giao</span>
+						}
+						else if (Model.TinhTrangDonHang == 2)
+						{
+							<span class="model">Đang giao</span>
+						}
+						else if (Model.TinhTrangDonHang == 3)
+						{
+							<span class="model">Đang chờ xác nhận</span>
+						}
+						else
+						{
+							<span class="model">Đã hủy</span>
+						}
+						<br /> Thanh toán:
+						@if (Model.DaThanhToan == true)
+						{
+							<span class="model">Đã thanh toán</span>
+						}
+						else
+						{
+							<span class="model">Chưa thanh toán</span>
+						}
+					</p>
+				</tr>
+				<tr>
+					<th scope="col">Sản phẩm</th>
+					<th scope="col">Tổng cộng</th>
+				</tr>
+				<tr>
+					<td>
+						@foreach (var i in Model.TenSanPhams)
+						{
+							@i<br />
+						}
+					</td>
+					<td>  @String.Format("{0:#,##0,0}", @Model.TongTien)đ </td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-lg-6 col-md-12 col-sm-6">
+			@Html.Action("Address", "Account", new { iMaHD = @Model.MaHD })
+
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<button type="button" class="btn btn-link text-muted">
+			<i class="mdi mdi-arrow-left me-1"></i>@Html.ActionLink("Quay về", "MyAccount", "Account")
+		</button>
+	</div>
+</div>

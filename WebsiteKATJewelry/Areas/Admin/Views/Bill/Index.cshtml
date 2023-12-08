@@ -1,0 +1,225 @@
+﻿@model PagedList.IPagedList<WebsiteKATJewelry.Models.DonHang>
+@using PagedList.Mvc;
+
+@{
+	ViewBag.Title = "Quản lý đơn hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+
+@helper Truncate(string s, int length)
+{
+	if (s.Length < length)
+	{
+		@s
+	}
+	else
+	{
+		@s.Substring(0, length)<text>...</text>
+	}
+}
+
+
+<div class="content">
+	@if (TempData["FailedMessage"] != null)
+	{
+		<div class="alert alert-danger separator hidden-lg" id="danger-alert">
+			<button type="button" aria-hidden="true" class="close" id="close-danger-alert">×</button>
+			<span><b>Failed - </b>@TempData["FailedMessage"]</span>
+		</div>
+	}
+	else if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success separator hidden-lg" id="success-alert">
+			<button type="button" aria-hidden="true" class="close" id="close-success-alert">×</button>
+			<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+		</div>
+	}
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card strpied-tabled-with-hover">
+					<div class="card-header ">
+						<h4 class="card-title">Danh sách đơn hàng</h4>
+					</div>
+					<div class="card-header ">
+						@using (Html.BeginForm("Index", "Bill", FormMethod.Get, new { @class = "form-inline" }))
+						{
+							<div class="form-group">
+								<label>Tình trạng:&nbsp;</label>@Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })&nbsp;&nbsp;&nbsp;
+								<label>Tên khách hàng:</label><input type="Text" class="form-control mx-sm-3" value="@ViewBag.Keyword" name="searchString" placeholder="Nhập tên khách hàng">
+								<button type="submit" class="btn btn-light">
+									<i class="mdi mdi-search-web"></i>
+								</button>
+							</div><hr />
+						}
+					</div>
+					<div class="card-body table-full-width table-responsive">
+						<table class="table table-hover table-bordered table-contextual">
+							<thead>
+							<th>
+								@Html.ActionLink("Mã đơn", "Index", new { sortProperty = "MaHD", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword, categoryID = ViewBag.Subject })
+							</th>
+
+							<th>
+								@Html.ActionLink("Khách hàng", "Index", new { sortProperty = "KhachHang.HoTen", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword, categoryID = ViewBag.Subject })
+							</th>
+
+							<th>
+								@Html.ActionLink("Ngày mua", "Index", new { sortProperty = "NgayMua", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword, categoryID = ViewBag.Subject })
+
+							</th>
+							<th>
+								@Html.ActionLink("Ngày giao", "Index", new { sortProperty = "NgayGiao", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword, categoryID = ViewBag.Subject })
+
+							</th>
+							<th>
+								@Html.ActionLink("Tổng tiền", "Index", new { sortProperty = "TongTien", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword, categoryID = ViewBag.Subject })
+
+							</th>
+							<th>
+								Tình trạng
+							</th>
+							<th>
+								Thanh toán
+							</th>
+							<th></th>
+							<thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr class="@(item.TinhTrangDonHang == 1 && item.DaThanhToan == true ? "table-success" :
+												   (item.TinhTrangDonHang == 2 ? "table-primary" :
+												   (item.TinhTrangDonHang == 3 ? "table-warning" :
+												   (item.TinhTrangDonHang == 4 ? "table-danger" : ""))))">
+										<td>
+											@Html.DisplayFor(modelItem => item.MaHD)
+										</td>
+										<td>
+											@Truncate(item.KhachHang.HoTen, 50)
+										</td>
+										<td>
+											@Html.FormatValue(item.NgayMua, "{0:dd/MM/yyyy}")
+										</td>
+										<td>
+											@Html.FormatValue(item.NgayGiao, "{0:dd/MM/yyyy}")
+										</td>
+										<td>
+											@Html.FormatValue(item.TongTien, "{0:#,##0}")
+										</td>
+										@if (item.TinhTrangDonHang == 1)
+										{
+											<td>Đã giao</td>
+										}
+										else if (item.TinhTrangDonHang == 2)
+										{
+											<td>Đang giao</td>
+										}
+										else if (item.TinhTrangDonHang == 3)
+										{
+											<td>Đang chờ xác nhận</td>
+										}
+										else
+										{
+											<td>Đã hủy</td>
+										}
+										@if (item.DaThanhToan == true)
+										{
+											<td>Đã thanh toán</td>
+										}
+										else if (item.DaThanhToan == false)
+										{
+											<td>Chưa thanh toán</td>
+										}
+										<td>
+											@if ((item.TinhTrangDonHang == 1 && item.DaThanhToan == true) || (item.TinhTrangDonHang == 4))
+											{
+												<a href="@Url.Action("Details", new { MaHD  = item.MaHD})" class="badge badge-success" role="button">Xem</a>
+											}
+											else
+											{
+												<a href="@Url.Action("Details", new { MaHD  = item.MaHD})" class="badge badge-success" role="button">Xem</a>
+												<a href="@Url.Action("Edit", new { MaHD  = item.MaHD})" class="badge badge-warning" role="button">Sửa</a>
+											}
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+								@using (Html.BeginForm("Index", "Bill", FormMethod.Get, new { @class = "product-search-form" }))
+								{
+									<p>
+										Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+									</p>
+
+									@Html.Hidden("page", (object)ViewBag.Page)
+									@Html.Hidden("sortProperty", (object)ViewBag.SortProperty)
+									@Html.Hidden("sortOrder", (object)ViewBag.SortOrder)
+									@Html.Hidden("searchString", (object)ViewBag.Keyword)
+									@Html.Hidden("categoryID", (object)ViewBag.Subject)
+								}
+							</div>
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+								<span class="page-info">
+									Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+								</span>
+							</div>
+						</div>
+						@Html.PagedListPager(Model, page => Url.Action("Index", new
+						{
+							page,
+							size = ViewBag.CurrentSize,
+							sortProperty = ViewBag.SortProperty,
+							sortOrder = ViewBag.SortOrder,
+							searchString = ViewBag.Keyword
+						}), new PagedListRenderOptions
+						{
+							LiElementClasses = new[] { "paging" },
+							UlElementClasses = new[] { "paging" }
+						})
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+
+	.text-success {
+		color: #28a745; /* Màu xanh lá cây cho trạng thái "Đã giao" */
+	}
+
+	.text-warning {
+		color: #ffc107; /* Màu vàng cho trạng thái "Đang giao" */
+	}
+
+	.text-info {
+		color: #17a2b8; /* Màu xanh dương cho trạng thái "Đang chờ xác nhận" */
+	}
+
+	.text-danger {
+		color: #dc3545; /* Màu đỏ cho trạng thái "Đã hủy" */
+	}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		// Bắt sự kiện bấm nút đóng
+		$("#close-success-alert").click(function () {
+			$("#success-alert").hide(); // Ẩn thông báo khi bấm nút đóng
+		});
+	});
+</script>
+<script>
+	$(document).ready(function () {
+		// Ẩn thông báo sau 3 giây
+		setTimeout(function () {
+			$("#success-alert").fadeOut('slow');
+		}, 3000); // 3000ms = 3 giây
+	});
+</script>

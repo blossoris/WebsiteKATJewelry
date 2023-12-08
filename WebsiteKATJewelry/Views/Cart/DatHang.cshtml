@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "Đặt hàng";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+@using WebsiteKATJewelry.Models
+@model List<Cart>
+<head>
+    <link href="~/Content/css_thanhtoan.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container" style="margin-top:5.5rem;">
+        <div class="row">
+          
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                @using (Html.BeginForm("DatHang", "Cart", FormMethod.Post))
+                {
+                    <div class="container_form">
+						<div class="row">
+							<h3>Thông Tin Thanh Toán</h3>
+							<div class="col-lg-6 col-md-6 col-sm-12">
+								<div class="column">
+									<form action="#" method="post">
+
+										<input type="text" id="fullName" name="fullName" required placeholder="Nhập họ và tên" class="inp">
+										<select class="form-select form-select-sm mb-3 inp" id="city" aria-label=".form-select-sm">
+											<option value="" selected>Chọn tỉnh thành</option>
+										</select>
+										
+										<select class="form-select form-select-sm inp" id="ward" aria-label=".form-select-sm">
+											<option value="" selected>Chọn phường xã</option>
+										</select>
+
+									</form>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-12">
+								<div class="column">
+									<form action="#" method="post">
+
+										<input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="Nhập số điện thoại" class="inp">
+
+										<select class="form-select form-select-sm mb-3 inp" id="district" aria-label=".form-select-sm">
+											<option value="" selected>Chọn quận huyện</option>
+										</select>
+										<input type="text" id="houseNumber" name="houseNumber" required placeholder="Ví dụ: Số 12 đường Cầu Giấy" class="inp">
+
+
+
+									</form>
+								</div>
+							</div>
+							<label for="note">Ghi Chú đơn hàng (tuỳ chọn):</label>
+
+							<textarea id="note" name="note" rows="2" cols="5" style="width: 780px ; height: 79px;" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn"></textarea>
+							<div class="thanhtoan">
+								<h5>HÌNH THỨC THANH TOÁN</h5>
+								<table>
+									<tr>
+										<a href="~/Cart/PaymentWithPayPal">
+											<button type="button" class="btn btn-success">
+												THANH TOÁN ONLINE
+											</button>
+										</a>
+									</tr>
+									<tr>
+										<button type="submit" class="btn btn-success">
+											THANH TOÁN BẰNG TIỀN MẶT
+										</button>
+									</tr>
+								</table>
+
+								<br>
+							</div>
+						</div>
+                    </div>
+                }
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="tomtatsp">
+                        <h3>Thông tin đơn hàng</h3>
+                        <table class="table inp">
+                            <thead>
+                                <tr>
+                                    <td colspan="2">Sản phẩm</td>
+
+                                    <td colspan="1">Tạm tính</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/Images/@i.sAnhBia" style="width: 70px; height:auto;">
+                                        </td>
+
+
+                                        @using (Html.BeginForm("CapNhatGioHang_dathang", "Cart", new { @iMaSP = i.iMaSP }))
+                                        {
+
+                                            <td>
+                                                <span class="sp_tensp">@i.sTenSP </span>
+                                                <input type="number" min="1" name="txtsl" value="@i.iSoLuong" style="width:25%;" />
+                                            </td>
+
+                                            <td>
+                                                @String.Format("{0:#,##0,0}", @i.dThanhTien)đ
+
+                                        </td>
+                                        <td>
+                                            <div class="d-flex btn_tt">
+                                                <a href="@Url.Action("XoaGioHang","Cart",new {iMaSP = @i.iMaSP, url=Request.Url.ToString()})" role="button">&#10005;</a>
+                                                <input type="submit" class="btn btn-dark" value="Sửa" />
+                                            </div>
+                                        </td>
+
+                                    }
+                                    </tr>
+                                }
+                            <tr>
+                                <td colspan="2" style=" font-weight:bold;padding-right:5px;color:red;">
+                                    Tổng số lượng: @string.Format("{0:#,##0}", @ViewBag.TongSoLuong)
+                                </td>
+                                <td colspan="2" style=" font-weight: bold; padding-right: 5px; color: red;">
+                                    Tổng tiền: @string.Format("{0:#,##0}", @ViewBag.TongTien+10000)
+                                </td>
+                                @*<td colspan="2" style=" font-weight: bold; padding-right: 5px; color: red;">
+                                    Tổng tiền usr: @string.Format("{0:#,##0}", @ViewBag.TongTien)
+                                </td>*@
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+        renderCity(result.data);
+    });
+
+    function renderCity(data) {
+        for (const x of data) {
+            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+        }
+        citis.onchange = function () {
+            district.length = 1;
+            ward.length = 1;
+            if (this.value != "") {
+                const result = data.filter(n => n.Id === this.value);
+
+                for (const k of result[0].Districts) {
+                    district.options[district.options.length] = new Option(k.Name, k.Id);
+                }
+            }
+        };
+        district.onchange = function () {
+            ward.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis.value);
+            if (this.value != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+                for (const w of dataWards) {
+                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                }
+            }
+        };
+    }
+</script>

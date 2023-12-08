@@ -1,0 +1,163 @@
+﻿@model PagedList.IPagedList<WebsiteKATJewelry.Models.LoaiSP>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Quản lý loại";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+
+<div class="content">
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success separator hidden-lg" id="success-alert">
+			<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+		</div>
+	}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card strpied-tabled-with-hover">
+					<div class="card-header ">
+						<h4 class="card-title">Danh sách loại</h4>
+						<p class="card-description">@Html.ActionLink("Thêm mới", "Create")</p>
+					</div>
+					<div class="card-header ">
+						@using (Html.BeginForm("Index", "Type", FormMethod.Get, new { @class = "form-inline" }))
+						{
+							<div class="form-group">
+								<label>Tên:</label><input type="Text" class="form-control mx-sm-3" value="@ViewBag.Keyword" name="searchString" placeholder="Nhập từ khóa">
+								<button type="submit" class="btn btn-light">
+									<i class="mdi mdi-search-web"></i>
+								</button>
+							</div><hr />
+						}
+					</div>
+					<div class="card-body table-full-width table-responsive">
+						<table class="table table-hover table-striped">
+							<thead>
+							<th>
+								@Html.ActionLink("ID", "Index", new { sortProperty = "MaLoai", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+
+							<th>
+								@Html.ActionLink("Tên danh mục", "Index", new { sortProperty = "TenLoai", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+
+							<th></th>
+							<thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>
+											@Html.DisplayFor(modelItem => item.MaLoai)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.TenLoai)
+										</td>
+										<td>
+											<a href="@Url.Action("Details", new { id = item.MaLoai})" class="badge badge-success" role="button">Xem</a>
+											<a href="@Url.Action("Edit", new { id = item.MaLoai})" class="badge badge-warning" role="button">Sửa</a>
+											<a href="@Url.Action("Delete", new { id = item.MaLoai})" class="badge badge-danger" role="button">Xóa</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+								@using (Html.BeginForm("Index", "Type", FormMethod.Get, new { @class = "product-search-form" }))
+								{
+									<p>
+										Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+									</p>
+
+									@Html.Hidden("page", (object)ViewBag.Page)
+									@Html.Hidden("sortProperty", (object)ViewBag.SortProperty)
+									@Html.Hidden("sortOrder", (object)ViewBag.SortOrder)
+									@Html.Hidden("searchString", (object)ViewBag.Keyword)
+								}
+							</div>
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+								<span class="page-info">
+									Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+								</span>
+							</div>
+						</div>
+						@Html.PagedListPager(Model, page => Url.Action("Index", new
+						{
+							page,
+							size = ViewBag.CurrentSize,
+							sortProperty = ViewBag.SortProperty,
+							sortOrder = ViewBag.SortOrder,
+							searchString = ViewBag.Keyword
+						}), new PagedListRenderOptions
+						{
+							LiElementClasses = new[] { "paging" },
+							UlElementClasses = new[] { "paging" }
+						})
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	/*Định dạng phân trang*/
+	.paging {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		justify-content: center;
+	}
+
+		.paging li {
+			margin: 0 2px;
+		}
+
+		.paging a {
+			text-decoration: none;
+			padding: 5px 10px;
+			background-color: white;
+			color: #d3c3e3;
+			border: 1px solid #a29bfe;
+			border-radius: 3px;
+		}
+
+			.paging a:hover {
+				background-color: #b19cd9;
+			}
+	/*Định dạng số trang*/
+	.page-info {
+		font-size: 14px;
+		color: #333;
+		font-weight: bold;
+		padding-right: 10px;
+	}
+	/*Định dạng kích thước trang*/
+	.product-search-form p {
+		/* Định dạng cho đoạn văn bản "Kích thước trang" */
+		font-weight: bold;
+		padding-left: 10px;
+	}
+
+	.product-search-form select {
+		/* Định dạng cho dropdown "size" */
+		padding: 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		background-color: #fff;
+	}
+</style>
+<script>
+	$(document).ready(function () {
+		// Ẩn thông báo sau 3 giây
+		setTimeout(function () {
+			$("#success-alert").fadeOut('slow');
+		}, 3000); // 3000ms = 3 giây
+	});
+</script>
+

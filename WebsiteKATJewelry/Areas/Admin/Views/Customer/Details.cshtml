@@ -1,0 +1,64 @@
+﻿@model WebsiteKATJewelry.Models.KhachHang
+
+@{
+	ViewBag.Title = "Quản lý khách hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>THÔNG TIN KHÁCH HÀNG</h4>
+<style type="text/css">
+	img {
+		width: 200px;
+	}
+
+	.dl-horizontal dt {
+		font-weight: bold;
+		height: 0px;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Họ tên:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.HoTen)
+		</dd>
+
+		<dt>
+			Địa chỉ:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.DiaChi)
+		</dd>
+
+		<dt>
+			Số điện thoại:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.SDT)
+		</dd>
+
+		@if (!string.IsNullOrEmpty(Model.Email))
+		{
+			<dt>
+				Email:
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Email)
+			</dd>
+		}
+	</dl>
+</div>
+<p>
+	@Html.ActionLink("VỀ TRANG QUẢN LÝ KHÁCH HÀNG", "Index")
+</p>
