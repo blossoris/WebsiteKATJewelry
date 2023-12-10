@@ -1,0 +1,54 @@
+﻿@model WebsiteKATJewelry.Models.LoaiSP
+
+@{
+	ViewBag.Title = "Quản lý loại";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+	img {
+		width: 200px;
+	}
+
+	.dl-horizontal dt {
+		font-weight: bold;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+<h4>XÓA</h4>
+
+<h5>Bạn thật sự muốn xóa?</h5>
+<h6 style="color:red">@Html.Raw(ViewBag.ThongBao)</h6>
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Tên loại:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.TenLoai)
+		</dd>
+
+		<dt>
+			Danh mục:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.DanhMuc.TenDM)
+		</dd>
+
+	</dl>
+
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="form-actions no-color">
+			<input type="submit" value="Xóa" class="btn btn-default" /> |
+			@Html.ActionLink("VỀ TRANG QUẢN LÝ LOẠI", "Index")
+		</div>
+	}
+</div>
