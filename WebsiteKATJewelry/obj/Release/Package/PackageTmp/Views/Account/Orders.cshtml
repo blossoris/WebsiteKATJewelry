@@ -1,0 +1,50 @@
+﻿
+@model IEnumerable<WebsiteKATJewelry.Models.DonHang>
+<table class="table" style="text-align:center">
+	<tr>
+		<td>ĐƠN HÀNG</td>
+		<td>NGÀY</td>
+		<td>TÌNH TRANG</td>
+		<td>TỔNG</td>
+		<td>THAO TÁC</td>
+	</tr>
+	<tr>
+	</tr>
+	@foreach (var i in Model)
+	{
+		<tr>
+			<td>@i.MaHD</td>
+			<td>@i.NgayMua</td>
+			<td>
+				@if (i.TinhTrangDonHang == 1)
+				{
+					<span class="model">Đã giao</span>
+				}
+				else if (i.TinhTrangDonHang == 2)
+				{
+					<span class="model">Đang giao</span>
+				}
+				else if (i.TinhTrangDonHang == 3)
+				{
+					<span class="model">Đang chờ xác nhận</span>
+				}
+				else
+				{
+					<span class="model">Đã hủy</span>
+				}
+			</td>
+			<td>@i.TongTien</td>
+
+			<td>
+				<a href="@Url.Action("OrdersDetails","Account",new { iMaHD = @i.MaHD })" role="button">
+
+					<button class="btn btn-link" style="color: #807c7c;">
+						Chi tiết
+					</button>
+
+				</a>
+			</td>
+		</tr>
+	}
+
+</table>

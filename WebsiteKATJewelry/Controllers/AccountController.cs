@@ -194,10 +194,23 @@ namespace WebsiteKATJewelry.Controllers
         [HttpPost]
         public ActionResult ForgotPass(Email email)
         {
+            if (email == null || string.IsNullOrEmpty(email.From))
+            {
+                TempData["ErrorMessage"] = "Email không hợp lệ hoặc không được cung cấp!";
+                return View();
+            }
+
+            var user = db.KhachHangs.SingleOrDefault(n => n.Email == email.From);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Email không tồn tại trong hệ thống!";
+                return View();
+            }
+
             string smtpServer = "smtp.gmail.com";
             int smtpPort = 587;
             string smtpUsername = "2124802010728@student.tdmu.edu.vn";
-            string smtpPassword = "xhpe ltdu adra ahvl";
+            string smtpPassword = "ccha gsft ghqq dhkb";
 
             SmtpClient smtpClient = new SmtpClient(smtpServer)
             {
@@ -206,46 +219,36 @@ namespace WebsiteKATJewelry.Controllers
                 EnableSsl = true
             };
 
-            var user = db.KhachHangs.SingleOrDefault(n => n.Email == email.From);
             string randomPassword = GenerateRandomPassword(12);
             user.Password = randomPassword;
             db.SubmitChanges();
-            var mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(smtpUsername);
-            mailMessage.ReplyToList.Add(smtpUsername);
-            mailMessage.Subject = "Đặt lại mật khẩu";
-            mailMessage.IsBodyHtml = true;
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(smtpUsername),
+                Subject = "Đặt lại mật khẩu",
+                IsBodyHtml = true,
+                Body = $"<html><head><style>/* Your styles here */</style></head><body>" +
+                       $"<h4>Mật khẩu mới</h4>" +
+                       $"<p>Xin chào {user.HoTen}, đây là mật khẩu mới của bạn: {randomPassword}</p>" +
+                       $"<p>Vui lòng đăng nhập và đổi lại mật khẩu!</p></body></html>"
+            };
 
             mailMessage.To.Add(email.From);
-            string body = "<html><head>";
-            body += "<style>";
-            body += "  body { font-family: Arial, sans-serif; background-color: burlywood; }";
-            body += "  h4 { color: #333; }";
-            body += "  p { color: #555; }";
-            body += "  table { width: 100%; border-collapse: collapse; }";
-            body += "  th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }";
-            body += "  th { background-color: #f2f2f2; }";
-            body += "  strong { color: #333; }";
-            body += "</style>";
-            body += "</head><body>";
 
-            body += "<h4>Mật khẩu mới</h4>";
-            body += $"<p>Xin chào {user.HoTen}, đây là mật khẩu mới của bạn: {randomPassword},</p>";
-            body += $"<p>Vui lòng đăng nhập và đổi lại mật khẩu!</p>";
-            body += "</body></html>";
-            mailMessage.Body = body;
             try
             {
                 smtpClient.Send(mailMessage);
+                TempData["SuccessMessage"] = "Mật khẩu mới đã được gửi qua email, vui lòng kiểm tra email!";
             }
             catch (Exception ex)
             {
-
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi gửi email. Vui lòng thử lại!";
             }
-            TempData["SuccessMessage"] = "Mật khẩu mới đã được gửi qua email, vui lòng kiểm tra email!";
 
             return RedirectToAction("Login");
         }
+
         public static string GenerateRandomPassword(int length)
         {
             const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-=_+";

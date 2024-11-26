@@ -1,0 +1,417 @@
+﻿@model WebsiteKATJewelry.Models.ProCom
+@using PagedList.Mvc;
+
+@{
+	ViewBag.Title = "Chi tiết";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>KAT</title>
+<!-- Roboto Font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/SingleProductLayout/css/bootstrap.min.css">
+<!-- Material Design Bootstrap -->
+<link rel="stylesheet" href="~/SingleProductLayoutcss/mdb-pro.min.css">
+<!-- Material Design Bootstrap Ecommerce -->
+<link rel="stylesheet" href="~/SingleProductLayout/css/mdb.ecommerce.min.css">
+<!-- Your custom styles (optional) -->
+@{
+    // Hàm để hiển thị chỉ một ký tự đầu tiên của email
+    Func<string, string> DisplayFirstCharOnly = (email) =>
+    {
+        if (!string.IsNullOrEmpty(email))
+        {
+            int atIndex = email.IndexOf('@');
+            if (atIndex > 0)
+            {
+                return email.Substring(0, 1) + new string('*', Math.Min(3, email.Length - 1)) + email.Substring(atIndex);
+            }
+        }
+        return email;
+    };
+}
+<div class="skin-light shopify-grid padding-large">
+	<div class="container">
+
+		<!--Section: Block Content-->
+		<section class="mb-5">
+
+			<div class="row">
+				<div class="col-md-6 mb-4 mb-md-0">
+
+					<div id="mdb-lightbox-ui"></div>
+
+					<div class="mdb-lightbox">
+
+						<div class="row product-gallery mx-1">
+							<div class="col-12 mb-0">
+
+								<figure class="view overlay rounded z-depth-1 main-img" style="max-height: 450px;">
+									<a href="#" data-size="710x823">
+										<img src="~/Images/@Model.SingleProduct.SanPham.AnhBia" class="img-fluid z-depth-1" style="margin-top: -90px;">
+									</a>
+								</figure>
+								@foreach (var item in Model.SingleProduct.anhSPs)
+								{
+									<figure class="view overlay rounded z-depth-1" style="visibility: hidden;">
+										<a href="~/Images/@item.HinhAnh" data-size="710x823">
+											<img src="~/Images/@item.HinhAnh" class="img-fluid z-depth-1">
+										</a>
+									</figure>
+								}
+							</div>
+							<div class="col-12">
+								<div class="row">
+									@foreach (var item in Model.SingleProduct.anhSPs)
+									{
+										<div class="col-3">
+											<div class="view overlay rounded z-depth-1 gallery-item hoverable">
+												<img src="~/Images/@item.HinhAnh" class="img-fluid">
+												<div class="mask rgba-white-slight"></div>
+											</div>
+										</div>
+									}
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-md-6">
+
+					<h5>@Model.SingleProduct.SanPham.TenSP</h5>
+					<p class="mb-2 text-muted text-uppercase small">
+						Mã: @Model.SingleProduct.SanPham.MaSP | Danh mục: @Model.SingleProduct.SanPham.DanhMuc.TenDM |
+						Tình trạng: @if (Model.SingleProduct.SanPham.SoLuongTon < 0)
+						{
+							<text>Hết hàng</text>
+						}
+						else
+						{
+							<text>Còn hàng</text>
+						}
+					</p>
+					<p><span class="mr-1"><strong>@Html.FormatValue(@Model.SingleProduct.SanPham.GiaSP, "{0:#,##0}") VNĐ</strong></span></p>
+					<p class="pt-1">
+						@Html.Raw(@Model.SingleProduct.SanPham.Mota.ToString().Replace("\n", "</p><p>"))
+					</p>
+
+					<hr>
+					<button type="button" style="font-size:medium" class="btn btn-light btn-md mr-1 mb-2">
+						<a href="@Url.Action("ThemGioHang", "Cart", new { ms = Model.SingleProduct.SanPham.MaSP, url = Request.Url.ToString() })">
+							<i class="fas fa-shopping-cart pr-2"></i>Thêm vào giỏ hàng
+						</a>
+					</button>
+				</div>
+			</div>
+
+		</section>
+		<!--Section: Block Content-->
+		<!-- Classic tabs -->
+		<div class="classic-tabs">
+
+			<ul class="nav tabs-primary nav-justified" id="advancedTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active show" id="description-tab" data-toggle="tab" href="#description" role="tab"
+					   aria-controls="description" aria-selected="true">OUR STORY - CHUYỆN CHƯA KỂ</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info"
+					   aria-selected="false">CÁCH ĐO SIZE - SIZE GUIDE</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
+					   aria-selected="false">VẬN CHUYỂN - SHIPPING</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="advancedTabContent">
+				<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+					@Html.Raw(@Model.SingleProduct.SanPham.Story.ToString().Replace("\n", "</p><p>"))
+				</div>
+				<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+					<p>
+						Chắc rằng các bạn đã nhiều lần gặp khó khăn khi nhẫn và vòng tay có quá nhiều cỡ với số đo đa dạng, bạn không biết tay mình là số mấy mới vừa? Từ giờ bạn không phải băng khoăn nữa, vì KaT Jewelry sẽ mách bạn những cách đo nhẫn cực kỳ dễ và hiệu quả nhé.
+						<br />
+						Có hai cách rất đơn giản để biết được size nhẫn và vòng của bạn.
+						<br />
+						<span style="font-weight:bold; text-decoration:underline">Cách thứ nhất:</span> Nếu bạn có sẵn chiếc nhẫn hoặc vòng tay
+						<br />
+						Bước 1: Dùng thước đặt ngang ở giữa nhẫn của bạn để đo đường kính, nhớ đo khoảng cách lòng bên trong của nhẫn.
+						<br />
+						Bước 2: Gửi kaT jewelry số đo theo đơn vị cm nhé (centi mét).
+						<img src="~/Images/ringsize1.png" /><br />
+						<span style="font-weight:bold; text-decoration:underline">Cách thứ hai:</span><br />
+						Bước 1: Dùng một sợi chỉ, quấn quanh ngón tay/cổ tay bạn muốn đo, làm dấu lại.
+						<br />
+						Bước 2: đo chiều dài sợi chỉ, chiều dài đó là chu vi của ngón tay/cổ tay bạn. Đối với cổ tay các bạn nhớ trừ hao, nới lỏng ra nhen.
+						<br />
+						Bước 3: gửi số đo cho KaT Jewelry với đơn vị là cm nhe (centi mét).
+						<br />
+						<img src="~/Images/edited-download-1.png" />
+						<img src="~/Images/edited-download-2.png" />
+						<span style="font-weight:bold; text-decoration:underline">BẢNG GIÁ DÂY CHUYỀN</span>
+						<br />
+						Lưu ý: Các bạn nên đo khớt đốt ngón tay trước bụng ngón tay, chu vi của phần nào lớn hơn bạn sẽ lấy số chu vi đó làm size nhẫn. Vì nhẫn phải lọt qua khớp đốt ngón tay mới vào được tới bụng ngón tay được nè :D. Nếu khớp đốt ngón tay to hơn bụng ngón tay mà size nhận bạn chọn lại là bụng ngón tay thì nhẫn sẽ không bao giờ lọt vào trong bụng ngón tay được nhé.
+						<br />
+						Dây chuyền bạc của KaT có nhiều độ dài và kích cỡ khác nhau phù hợp với nhiều loại mặt dây và độ dài mong muốn. Được kết bằng bạc chất lượng cao đủ tiêu chuẩn 925. Giá niêm yết theo bảng sau:
+						<br />
+						<img src="~/Images/size-charm.jpg" />
+					</p>
+					<table align="left" border="1" cellpadding="1" cellspacing="1" style="width:100%;">
+						<tbody>
+							<tr>
+								<td>&nbsp;</td>
+								<td style="text-align: center;">Dài 40 cm</td>
+								<td style="text-align: center;">Dài 45 cm</td>
+								<td style="text-align: center;">Dài 50 cm</td>
+								<td style="text-align: center;">Dài 55 cm</td>
+							</tr>
+							<tr>
+								<td style="text-align: center;">Mắt xích nhỏ</td>
+								<td style="text-align: center;">140k</td>
+								<td style="text-align: center;">180k</td>
+								<td style="text-align: center;">220k</td>
+								<td style="text-align: center;">không có</td>
+							</tr>
+							<tr>
+								<td style="text-align: center;">Mắt xích trung</td>
+								<td style="text-align: center;">180k</td>
+								<td style="text-align: center;">220k</td>
+								<td style="text-align: center;">260k</td>
+								<td style="text-align: center;">không có</td>
+							</tr>
+							<tr>
+								<td style="text-align: center;">Mắt xích lớn</td>
+								<td style="text-align: center;">220k</td>
+								<td style="text-align: center;">260k</td>
+								<td style="text-align: center;">300k</td>
+								<td style="text-align: center;">340k</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+					<p>
+						Nếu các bạn, vì lý do nào đó không thể ghé thăm cửa hàng của KaT, thì các bạn vẫn có thể đặt hàng qua website, Facebook, Tin nhắn, viber, email,... nhé.
+						Sau khi đặt hàng thành công, team KaT sẽ liên hệ bạn sớm nhất có thể để chốt thông tin order trước khi đưa qua bộ phận shipping gồm các thông tin sau:
+						<br />
+						1 - Số lượng và loại đơn hàng
+						<br />
+						2 - Phương thức vận chuyển và chi phí vận chuyển (giá ship 40k chỉ mang tính chất tham khảo, giá thực tế sẽ được báo khi nhân viên liên lạc bạn nhé)
+						<br />
+						3 - Phương thức thanh toán (COD thu tiền tại nhà hoặc chuyển khoản)
+						<br />
+						4 - Thời gian nhận hàng
+						<br />
+						KaT Jewelry sử dụng dịch vụ chuyển phát nên thời gian bắt đầu chuyển sẽ chậm 1 ngày so với ngày chốt các bạn nhé. Tùy vị trí sẽ có thời gian ship và giá ship khác nhau phụ thuộc vào công ty chuyển phát.
+					</p>
+				</div>
+			</div>
+
+		</div>
+		<!-- Classic tabs -->
+
+		<hr>
+
+	</div>
+
+	<!-- SCRIPTS -->
+	<!-- JQuery -->
+	<script src="~/SingleProductLayout/js/jquery-3.4.1.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="~/SingleProductLayout/js/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="~/SingleProductLayout/js/bootstrap.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript" src="~/SingleProductLayout/js/mdb.min.js"></script>
+	<!-- MDB Ecommerce JavaScript -->
+	<script type="text/javascript" src="~/SingleProductLayout/js/mdb.ecommerce.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// MDB Lightbox Init
+			$(function () {
+				$("#mdb-lightbox-ui").load("../../../mdb-addons/mdb-lightbox-ui.html");
+			});
+		});
+	</script>
+</div>
+
+<div class="container">
+	<h4>Đánh giá</h4>
+	<div class="comments-container">
+		<div class="comments-column comments-column1">
+			@foreach (var binhLuan in Model.Comments.Take(Model.Comments.Count / 2))
+			{
+				<div class="comment">
+					<p>@DisplayFirstCharOnly(binhLuan.Email)</p>
+					<p class="comment-date">@Html.FormatValue(binhLuan.NgayBL, "{0:dd/MM/yyyy}")</p>
+					@if (int.TryParse(binhLuan.Danhgia, out int danhGiaInt))
+					{
+						<div class="fas rating">
+							@for (int i = 5; i >= 1; i--)
+							{
+								<i class="fa-solid @(i <= danhGiaInt ? "fa-star star-filled" : "fa-star far")"></i>
+							}
+						</div>
+					}
+					<span>( @binhLuan.Danhgia / 5 )</span>
+					<p class="comment-content">@binhLuan.Noidung</p>
+				</div>
+			}
+		</div>
+
+		<div class="comments-column comments-column2">
+			@foreach (var binhLuan in Model.Comments.Skip(Model.Comments.Count / 2))
+			{
+				<div class="comment">
+					<p>@DisplayFirstCharOnly(binhLuan.Email)</p>
+					<p class="comment-date">@Html.FormatValue(binhLuan.NgayBL, "{0:dd/MM/yyyy}")</p>
+					@if (int.TryParse(binhLuan.Danhgia, out int danhGiaInt))
+					{
+						<div class="fas rating">
+							@for (int i = 5; i >= 1; i--)
+							{
+								<i class="fa-solid @(i <= danhGiaInt ? "fa-star star-filled" : "fa-star far")"></i>
+							}
+						</div>
+					}
+					<span>( @binhLuan.Danhgia / 5 )</span>
+					<p class="comments-list">@binhLuan.Noidung</p>
+				</div>
+			}
+		</div>
+	</div><!-- end row -->
+	@Html.PagedListPager(Model.Comments, page => Url.Action("SingleProduct", new { id = Model.SingleProduct.SanPham.MaSP, page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, MaximumPageNumbersToDisplay = 5 })
+</div><!-- end container -->
+<div class="container">
+	<h4>Thêm đánh giá</h4>
+	<div class="col-md-6">
+		@if (Session["email"] != null)
+		{
+			if (!ViewBag.HasComment)
+			{
+				using (Html.BeginForm("AddComment", "Product"))
+				{
+					@Html.Hidden("productId", Model.SingleProduct.SanPham.MaSP)
+					<div class="comment-box">
+						<div>
+							<label for="rating">Đánh giá của bạn <span style="color:red">*</span>: &nbsp;&nbsp;&nbsp;</label>
+							<div class="rating">
+								<input type="radio" name="Rating" id="5" value="5"><label for="5">☆</label>
+								<input type="radio" name="Rating" id="4" value="4"><label for="4">☆</label>
+								<input type="radio" name="Rating" id="3" value="3"><label for="3">☆</label>
+								<input type="radio" name="Rating" id="2" value="2"><label for="2">☆</label>
+								<input type="radio" name="Rating" id="1" value="1"><label for="1">☆</label>
+							</div>
+						</div>
+						<p><label for="comment">Nhận xét của bạn <span style="color:red">*</span>:</label> </p>
+						<div class="comment-area">
+							<textarea name="comment" id="comment" rows="4" cols="80" required></textarea>
+						</div>
+						<br />
+						<div class="mt-4">
+							<button class="btn btn-success send px-5" type="submit">Gửi đi</button>
+						</div>
+					</div>
+				}
+			}
+			else
+			{
+				<p style="font-style:italic; font-weight:bold">Bạn đã bình luận về sản phẩm này rồi.</p>
+			}
+		}
+		else
+		{
+			<p style="font-style:italic; font-weight:bold">
+				Để bình luận, đánh giá bạn cần phải đăng nhập
+				<a href="@Url.Action("Login", "Account")" class="txt2">Đăng nhập</a>
+			</p>
+
+		}
+	</div>
+</div><!-- end container -->
+<style>
+	.rating {
+		display: inline-flex;
+		margin-top: -10px;
+		flex-direction: row-reverse;
+	}
+
+		.rating > input {
+			display: none
+		}
+
+		.rating > label {
+			position: relative;
+			width: 20px;
+			font-size: 27px;
+			color: #ffbb00;
+			cursor: pointer;
+		}
+
+			.rating > label::before {
+				content: "\2605";
+				position: absolute;
+				opacity: 0
+			}
+
+			.rating > label:hover:before,
+			.rating > label:hover ~ label:before {
+				opacity: 1 !important
+			}
+
+		.rating > input:checked ~ label:before {
+			opacity: 1
+		}
+
+		.rating:hover > input:checked ~ label:before {
+			opacity: 0.4
+		}
+
+	.star-filled {
+		color: #ffbb00; /* Đổi màu sao thành màu vàng */
+	}
+
+	.comments-container {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.comments-column {
+		flex: 1;
+		padding: 10px;
+	}
+
+	.comment {
+		border: 1px solid #ccc;
+		padding: 10px;
+		margin-bottom: 10px;
+		overflow: auto;
+		height: 175px; /* Thay đổi giá trị này thành chiều cao mong muốn */
+		position: relative; /* Để sử dụng absolute positioning cho ngày và username */
+	}
+	/* Định dạng cho ngày (bên phải) */
+	.comment-date {
+		position: absolute;
+		top: 15px;
+		right: 10px; /* Khoảng cách từ bên phải */
+	}
+
+	.d-flex {
+		display: flex !important;
+		justify-content: flex-end;
+		margin-top: 5px;
+	}
+
+	.button-buy a {
+		font-size: 14px;
+	}
+</style>

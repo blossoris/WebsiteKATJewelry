@@ -1,0 +1,44 @@
+﻿@model WebsiteKATJewelry.Models.LoaiSP
+
+@{
+	ViewBag.Title = "Quản lý loại";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>CHI TIẾT LOẠI</h4>
+<style type="text/css">
+	.dl-horizontal dt {
+		font-weight: bold;
+		height: 0px;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Tên loại:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.TenLoai)
+		</dd>
+
+		<dt>
+			Danh mục:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.DanhMuc.TenDM)
+		</dd>
+
+	</dl>
+</div>
+<p>
+	@Html.ActionLink("Sửa", "Edit", new { id = Model.MaLoai }) |
+	@Html.ActionLink("VỀ TRANG QUẢN LÝ LOẠI", "Index")
+</p>

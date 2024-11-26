@@ -1,0 +1,142 @@
+﻿@model WebsiteKATJewelry.Areas.Admin.Models.Bill
+
+@{
+	ViewBag.Title = "Quản lý đơn hàng";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@helper Truncate(string s, int length)
+{
+	if (s.Length < length)
+	{
+		@s
+	}
+	else
+	{
+		@s.Substring(0, length)<text>...</text>
+	}
+}
+<h4>CHI TIẾT ĐƠN HÀNG</h4>
+<style type="text/css">
+	img {
+		width: 200px;
+	}
+
+	.dl-horizontal dt {
+		font-weight: bold;
+		height: 0px;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Mã đơn hàng:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.DonHang.MaHD)
+		</dd>
+
+		<dt>
+			Khách hàng:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.DonHang.KhachHang.HoTen)
+		</dd>
+
+		<dt>
+			Ngày mua:
+		</dt>
+		<dd>
+			@Html.FormatValue(Model.DonHang.NgayMua, "{0:dd/MM/yyyy}")
+		</dd>
+
+		<dt>
+			Tình trạng đơn hàng:
+		</dt>
+		<dd>
+			@{
+				if (Model.DonHang.TinhTrangDonHang == 1)
+				{
+					<text>Đã giao</text>
+				}
+				if (Model.DonHang.TinhTrangDonHang == 2)
+				{
+					<text>Đang giao</text>
+				}
+				if (Model.DonHang.TinhTrangDonHang == 3)
+				{
+					<text>Đang chờ xác nhận</text>
+				}
+				if (Model.DonHang.TinhTrangDonHang == 4)
+				{
+					<text>Đã hủy</text>
+				}
+			}
+		</dd>
+		<dt>
+			Tổng sản phẩm:
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.DonHang.TongSP)
+		</dd>
+
+		<dt>
+			Tổng tiền:
+		</dt>
+
+		<dd>
+			@Html.FormatValue(Model.DonHang.TongTien, "{0:#,##0}")
+		</dd>
+	</dl>
+</div>
+<div class="card-body table-full-width table-responsive">
+	<table class="table table-hover table-striped">
+		<thead>
+		<th>
+			Sản phẩm
+		</th>
+
+		<th>
+			Giá
+		</th>
+
+		<th>
+			Số lượng
+		</th>
+
+		<th>
+			Thành tiền
+		</th>
+
+		<th></th>
+		<thead>
+		<tbody>
+			@foreach (var chiTiet in Model.chiTietDonHangs)
+			{
+				<tr>
+					<td>
+						@Truncate(chiTiet.SanPham.TenSP, 50)
+					</td>
+					<td>
+						@Html.FormatValue(chiTiet.SanPham.GiaSP, "{0:#,##0}")
+					</td>
+					<td>
+						@chiTiet.SoLuong
+					</td>
+					<td>
+						@Html.FormatValue(chiTiet.ThanhTien, "{0:#,##0}")
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+<p>
+	@Html.ActionLink("Back to List", "Index")
+</p>

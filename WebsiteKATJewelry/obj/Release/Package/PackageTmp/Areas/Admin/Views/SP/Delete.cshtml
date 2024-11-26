@@ -1,0 +1,93 @@
+﻿@model WebsiteKATJewelry.Models.SanPham
+
+@{
+	ViewBag.Title = "Quản lý sản phẩm";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+	img {
+		width: 200px;
+	}
+
+	.dl-horizontal dt {
+		font-weight: bold;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 200px;
+	}
+</style>
+<h4>XÓA SẢN PHẨM</h4>
+
+<h5>Bạn thật sự muốn xóa?</h5>
+<h6 style="color:red">@Html.Raw(ViewBag.ThongBao)</h6>
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			Tên sản phẩm:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.TenSP)
+		</dd>
+		<dt>
+			Loại:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.LoaiSP.TenLoai)
+		</dd>
+		<dt>
+			Danh mục
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.DanhMuc.TenDM)
+		</dd>
+		<dt>
+			Mô tả:
+		</dt>
+		<dd>
+			@Html.Raw(@Model.Mota.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))
+		</dd>
+		<dt>
+			Ảnh:
+		</dt>
+		<dd>
+			<img src="~/Images/@Model.AnhBia" alt=" @Model.TenSP">
+		</dd>
+		<dt>
+			Giá:
+		</dt>
+		<dd>
+			@Html.FormatValue(@Model.GiaSP, "{0:#,##0}") VNĐ
+		</dd>
+		<dt>
+			Ngày nhập:
+		</dt>
+		<dd>
+			@Html.FormatValue(@Model.NgayNhap, "{0:dd/MM/yyyy}")
+		</dd>
+		<dt>
+			Số lượng bán:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SoLuongBan)
+		</dd>
+		<dt>
+			Số lượng tồn:
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.SoLuongTon)
+		</dd>
+	</dl>
+
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="form-actions no-color">
+			<input type="submit" value="Delete" class="btn btn-default" /> |
+			@Html.ActionLink("VỀ TRANG QUẢN LÝ SẢN PHẨM", "Index")
+		</div>
+	}
+</div>

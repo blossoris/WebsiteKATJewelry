@@ -1,0 +1,127 @@
+﻿@model WebsiteKATJewelry.Models.KhachHang
+
+@{
+	ViewBag.Title = "Tài khoản";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div class="shopify-grid padding-large">
+
+	<div class="container">
+		<div class="row">
+			@if (TempData["SuccessMessage"] != null)
+			{
+				<div class="alert alert-success separator hidden-lg" id="success-alert">
+					<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+				</div>
+			}
+			<section id="selling-products" class="col-md-9 product-store">
+				<div class="container">
+					<ul class="tabs list-unstyled">
+						<li data-tab-target="#tk" class="active tab">Tài khoản</li>
+						<li data-tab-target="#dh" class="tab">Đơn hàng</li>
+						<li data-tab-target="#tshirts" class="tab">Cập nhật</li>
+						<li class="tab"><a href="@Url.Action("LogOut", "Account")">Đăng xuất</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="tk" data-tab-content class="active">
+							<div class="row d-flex flex-wrap">
+								<table class="table" style="width: 500px; margin: 0px auto;">
+									<tr>
+										<td>
+											Họ tên
+										</td>
+
+										<td>
+											@Html.DisplayFor(model => model.HoTen)
+										</td>
+
+									</tr>
+									<tr>
+										<td>Địa chỉ</td>
+										<td> @Html.DisplayFor(model => model.DiaChi)</td>
+									</tr>
+									<tr>
+										<td>Email</td>
+										<td> @Html.DisplayFor(model => model.Email)</td>
+									</tr>
+									<tr>
+										<td>Số điện thoại</td>
+										<td> @Html.DisplayFor(model => model.SDT)</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div id="dh" data-tab-content>
+							<div class="row d-flex flex-wrap">
+								@Html.Action("Orders", "Account")
+							</div>
+						</div>
+						<div id="tshirts" data-tab-content>
+							<div class="row d-flex flex-wrap">
+								@using (Html.BeginForm("ChangePass", "Account", FormMethod.Post, new
+								{
+									@enctype = "multipart/form-data"
+								}))
+								{
+									@Html.AntiForgeryToken()
+
+									<div class="form-horizontal">
+										<table>
+											<tr>
+												<td>
+													<div class="u-full-width">
+														<label>Họ và tên</label>
+														@Html.TextBoxFor(model => model.HoTen, new { @class = "u-full-width", @name = "hoten" })
+													</div>
+												</td>
+											</tr>
+
+											<tr>
+												<td colspan="2">
+													<div class="u-full-width">
+														<label>Địa chỉ Email</label>
+														@Html.TextBoxFor(model => model.Email, new { @class = "u-full-width", @name = "email" })
+													</div>
+												</td>
+											</tr>
+										</table>
+
+										<fieldset>
+											<legend>Thay đổi mật khẩu</legend>
+											<div class="form-group">
+												<label class="control-label col-md-3">Mật khẩu hiện tại:</label>
+												<div class="u-full-width">
+													<input type="password" name="CurPass" required class="input" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3">Mật khẩu mới:</label>
+												<div class="u-full-width">
+													<input type="password" name="NewPass" required class="input" onkeyup="validatePassword()" id="NewPass" />
+													<div id="error"></div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3">Xác nhận mật khẩu mới:</label>
+												<div class="u-full-width">
+													<input type="password" name="CormNewPass" required class="input" />
+												</div>
+											</div>
+										</fieldset>
+
+
+										<div class="form-group mt-2">
+											<div class="col-md-offset-2 col-md-10">
+												<input type="submit" value="LƯU THAY ĐỔI" class="btn btn-dark" />
+											</div>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

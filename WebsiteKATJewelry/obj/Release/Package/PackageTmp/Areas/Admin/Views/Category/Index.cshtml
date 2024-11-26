@@ -1,0 +1,110 @@
+﻿@model PagedList.IPagedList<WebsiteKATJewelry.Models.DanhMuc>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Quản lý danh mục";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+
+<div class="content">
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success separator hidden-lg" id="success-alert">
+			<span><b>Success - </b>@TempData["SuccessMessage"]</span>
+		</div>
+	}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card strpied-tabled-with-hover">
+					<div class="card-header ">
+						<h4 class="card-title">Danh sách danh mục</h4>
+						<p class="card-category">@Html.ActionLink("Thêm mới", "Create")</p>
+					</div>
+					<div class="card-header ">
+						@using (Html.BeginForm("Index", "Category", FormMethod.Get, new { @class = "form-inline" }))
+						{
+							<div class="form-group">
+								<label>Tên danh mục:</label><input type="Text" class="form-control mx-sm-3" value="@ViewBag.Keyword" name="searchString" placeholder="Nhập từ khóa">
+								<button type="submit" class="btn btn-light">
+									<i class="mdi mdi-search-web"></i>
+								</button>
+							</div><hr />
+						}
+					</div>
+					<div class="card-body table-full-width table-responsive">
+						<table class="table table-hover table-striped table-bordered">
+							<thead>
+							<th>
+								@Html.ActionLink("ID", "Index", new { sortProperty = "MaDM", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+
+							<th>
+								@Html.ActionLink("Tên danh mục", "Index", new { sortProperty = "TenDM", sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })
+							</th>
+
+							<th></th>
+							<thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>
+											@Html.DisplayFor(modelItem => item.MaDM)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.TenDM)
+										</td>
+										<td>
+											<a href="@Url.Action("Details", new { id = item.MaDM})" class="badge badge-success" role="button">Xem</a>
+											<a href="@Url.Action("Edit", new { id = item.MaDM})" class="badge badge-warning" role="button">Sửa</a>
+											<a href="@Url.Action("Delete", new { id = item.MaDM})" class="badge badge-danger" role="button">Xóa</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+								@using (Html.BeginForm("Index", "Category", FormMethod.Get, new { @class = "product-search-form" }))
+								{
+									<p>
+										Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+									</p>
+
+									@Html.Hidden("page", (object)ViewBag.Page)
+									@Html.Hidden("sortProperty", (object)ViewBag.SortProperty)
+									@Html.Hidden("sortOrder", (object)ViewBag.SortOrder)
+									@Html.Hidden("searchString", (object)ViewBag.Keyword)
+								}
+							</div>
+							<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+								<span class="page-info">
+									Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+								</span>
+							</div>
+						</div>
+						@Html.PagedListPager(Model, page => Url.Action("Index", new
+						{
+							page,
+							size = ViewBag.CurrentSize,
+							sortProperty = ViewBag.SortProperty,
+							sortOrder = ViewBag.SortOrder,
+							searchString = ViewBag.Keyword
+						}), new PagedListRenderOptions
+						{
+							LiElementClasses = new[] { "paging" },
+							UlElementClasses = new[] { "paging" }
+						})
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

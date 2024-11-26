@@ -1,0 +1,156 @@
+﻿@model WebsiteKATJewelry.Models.Product
+
+@{
+	ViewBag.Title = "Quản lý sản phẩm";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="//cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+
+<script src=" @Url.Content("~/ckfinder/ckfinder.js")"
+		type="text/javascript"></script>
+<script type="text/javascript">
+CKFinder.setupCKEditor(null, ' @Url.Content("~/ckfinder/")');
+</script>
+<style>
+	.form-horizontal {
+		margin: 20px;
+	}
+
+	.control-label {
+		font-weight: bold;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 5px;
+		margin-bottom: 10px;
+	}
+
+	.btn {
+		background-color: #007BFF;
+		color: #fff;
+	}
+
+		.btn:hover {
+			background-color: #0056b3;
+		}
+
+	.text-danger {
+		color: red;
+	}
+	/* Điều chỉnh định dạng cho CKEditor */
+	.cke {
+		border: 1px solid #ccc;
+	}
+	/* Điều chỉnh định dạng cho Dropdowns */
+	select.form-control {
+		width: 100%;
+	}
+</style>
+
+<h4>THÊM SẢN PHẨM</h4>
+@using (Html.BeginForm("Create", "SP", FormMethod.Post, new
+{
+	enctype = "multipart/form-data"
+}))
+{
+	@Html.AntiForgeryToken()
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.TenSP, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(model => model.TenSP, new { @class = "form-control", required = "required" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Mota, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextAreaFor(model => model.Mota, new { @class = "form-control", cols = 30, rows = 10, id = "mota", required = "required" })
+				<script>CKEDITOR.replace('mota'); CKFinder.setupCKEditor(null, '/ckfinder');</script>
+
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Story, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextAreaFor(model => model.Story, new { @class = "form-control", cols = 30, rows = 10, id = "story", required = "required" })
+				<script>CKEDITOR.replace('story'); CKFinder.setupCKEditor(null, '/ckfinder');</script>
+
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.Label("Ảnh bìa sản phẩm", new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				<input type="file" name="fFileUpload"/>
+				<br />
+				@ViewBag.ThongBao
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.Label("Danh sách ảnh sản phẩm", new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextBox("files", "", new { type = "file", multiple = "multiple", accept = "image/*" })
+				<div class="filearray">
+
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.GiaSP, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(model => model.GiaSP, new { @class = "form-control", min = 1, required = "required" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.SoLuongTon, new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(model => model.SoLuongTon, new { @class = "form-control", required = "required" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.MaDM, "Danh mục", new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("MaDM")
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.MaLoai, "Loại", new { @class = "control-label col-md-2" })
+			<div class="col-md-10 ">
+				@Html.DropDownList("MaLoai")
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Thêm mới" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+<div>
+	@Html.ActionLink("VỀ TRANG QUẢN LÝ SẢN PHẨM", "Index")
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+	$(document).on('ready', () => {
+		$("#files").on('change', function() {
+			$(".filearray").empty();
+			for (let i = 0; i < this.files.length; ++i) {
+				let filereader = new FileReader();
+				let $img = jQuery.parseHTML("<img width='150' src=''>");
+				filereader.onload = function(){
+					$img[0].src = this.result;
+				};
+				filereader.readAsDataURL(this.files[i]);
+				$(".filearray").append($img);
+			}
+		});
+	});
+</script>

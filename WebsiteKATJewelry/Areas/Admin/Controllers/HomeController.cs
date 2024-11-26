@@ -108,7 +108,7 @@ namespace WebsiteKATJewelry.Areas.Admin.Controllers
             string smtpServer = "smtp.gmail.com";
             int smtpPort = 587;
             string smtpUsername = "2124802010728@student.tdmu.edu.vn";
-            string smtpPassword = "xhpe ltdu adra ahvl";
+            string smtpPassword = "ccha gsft ghqq dhkb";
 
             SmtpClient smtpClient = new SmtpClient(smtpServer)
             {

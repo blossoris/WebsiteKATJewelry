@@ -1,0 +1,47 @@
+﻿@model WebsiteKATJewelry.Models.Admin
+
+@{
+	ViewBag.Title = "Đổi mật khẩu";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm("ChangePassAd", "Home", FormMethod.Post, new
+{
+	@enctype = "multipart/form-data"
+}))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>Admin</h4>
+		<hr />
+		<div class="form-group">
+			<label class="control-label col-md-2">Mật khẩu hiện tại:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="password" size="70" name="CurPass" required />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">Mật khẩu mới:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="password" size="70" name="NewPass" required />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">Xác nhận mật khẩu mới:</label>
+			<div class="col-md-10">
+				<input class="form-control" type="password" size="70" name="CormNewPass" required />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Lưu" class="btn btn-primary mr-2" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Trở về", "Index")
+</div>

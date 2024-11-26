@@ -1,0 +1,230 @@
+﻿@model PagedList.PagedList<SanPham>
+@using PagedList.Mvc;
+@using WebsiteKATJewelry.Models;
+@helper Truncate(string s, int length)
+{
+	if (s.Length < length)
+	{
+		@s
+	}
+	else
+	{
+		@s.Substring(0, length)<text>...</text>
+	}
+}
+@{
+	ViewBag.Title = "Sản phẩm";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="shopify-grid padding-large">
+	<div class="container">
+		<div class="row">
+
+			<section id="selling-products" class="col-md-9 product-store">
+				<div class="container">
+					<div class="tab-content">
+						<div id="all" data-tab-content class="active">
+							<div class="row d-flex flex-wrap">
+
+								@foreach (var product in Model)
+								{
+									<div class="product-item col-lg-4 col-md-6 col-sm-6 text-center">
+										<div class="image-holder">
+											<img src="~/Images/@product.AnhBia" alt="@product.TenSP" class="product-image zoom-effect">
+										</div>
+										<div class="cart-concern" style="margin:auto">
+											<div class="cart-button d-flex justify-content-between align-items-center">
+												<button type="button" class="btn-wrap cart-link d-flex align-items-center">
+													<i class="icon icon-shopping-cart"></i>&nbsp;add to cart <i class="icon icon-arrow-io"></i>
+												</button>
+												<button type="button" class="btn-wrap cart-link d-flex" data-bs-placement="top" data-bs-toggle="tooltip" title="Xem nhanh">
+													<i class="icon icon-screen-full"></i>
+												</button>
+											</div>
+										</div>
+										<div class="product-detail">
+											<h3 class="product-title">
+												<a href="@Url.Action("SingleProduct", "Product", new { id = product.MaSP })">@product.TenSP</a>
+											</h3>
+											<div class="item-price text-primary" style="font-size:25px">@Html.FormatValue(product.GiaSP, "{0:#,##0}")đ</div>
+										</div>
+									</div>
+
+								}
+							</div>
+						</div>
+					</div>
+					<nav class="navigation paging-navigation text-center padding-medium" role="navigation">
+						<div class="pagination loop-pagination d-flex text-right">
+							@using (Html.BeginForm("ProductByCategory", "Product", FormMethod.Get, new { @class = "product-search-form", }))
+							{
+								<p>
+									Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+								</p>
+
+								@Html.Hidden("page", (object)ViewBag.Page)
+								@Html.Hidden("categoryID", (object)ViewBag.id)
+								@Html.Hidden("sortProperty", (object)ViewBag.SortProperty)
+								@Html.Hidden("sortOrder", (object)ViewBag.SortOrder)
+								@Html.Hidden("searchString", (object)ViewBag.Keyword)
+								@Html.Hidden("subCategories", (object)ViewBag.Subject)
+							}
+						</div>
+						<div class="pagination loop-pagination d-flex justify-content-center">
+							@{
+								int totalPages = Model.PageCount;
+								int currentPage = Model.PageNumber;
+								string url = Url.Action("ProductByCategory", new { size = ViewBag.CurrentSize, sortProperty = ViewBag.SortProperty, sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword });
+							}
+
+							<div class="pagination">
+								@if (currentPage > 1)
+								{
+									<a href="@Url.Action("ProductByCategory", new { page = currentPage - 1, size = ViewBag.CurrentSize, sortProperty = ViewBag.SortProperty, sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })" class="pagination-arrow d-flex align-items-center">
+										<i class="icon icon-arrow-left"></i>
+									</a>
+								}
+
+								@for (int i = 1; i <= totalPages; i++)
+								{
+									if (i == currentPage)
+									{
+										<span aria-current="page" class="page-numbers current">@i</span>
+									}
+									else
+									{
+										<a class="page-numbers" href="@Url.Action("ProductByCategory", new { page = i, size = ViewBag.CurrentSize, sortProperty = ViewBag.SortProperty, sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })">@i</a>
+									}
+								}
+
+								@if (currentPage < totalPages)
+								{
+									<a href="@Url.Action("ProductByCategory", new { page = currentPage + 1, size = ViewBag.CurrentSize, sortProperty = ViewBag.SortProperty, sortOrder = ViewBag.SortOrder, searchString = ViewBag.Keyword })" class="pagination-arrow d-flex align-items-center">
+										<i class="icon icon-arrow-right"></i>
+									</a>
+								}
+							</div>
+
+						</div>
+					</nav>
+				</div>
+			</section>
+
+			<aside class="col-md-3">
+				<div class="sidebar">
+					<div class="widgets widget-menu">
+						<div class="widget-search-bar">
+							@using (Html.BeginForm("ProductByCategory", "Product", FormMethod.Get, new { @class = "d-flex" }))
+							{
+								<input type="Text" class="search-field" value="@ViewBag.Keyword" name="searchString" placeholder="Nhập tên sản phẩm">
+								<button type="submit" class="btn btn-dark">
+									<i class="icon icon-search"></i>
+								</button>
+								@Html.Hidden("categoryID", (object)ViewBag.id)
+								@Html.Hidden("subCategories", (object)ViewBag.subCategories)
+							}
+						</div>
+					</div>
+					<div class="widgets widget-product-tag">
+						<h5 class="widget-title">Lọc theo loại</h5>
+
+						<ul class="product-tags sidebar-list list-unstyled">
+							@using (Html.BeginForm("ProductByCategory", "Product", FormMethod.Get, new { @class = "d-flex", id = "filterForm" }))
+							{
+								<li class="tags-item">@Html.DropDownList("subCategories", ViewBag.subCategories as SelectList,"TẤT CẢ", htmlAttributes: new { id = "categoryDropdown" })</li>
+								@Html.Hidden("categoryID", (object)ViewBag.id)
+
+							}
+						</ul>
+					</div>
+
+					<div class="widgets widget-product-tags">
+						<h5 class="widget-title">Sắp xếp</h5>
+						<ul class="product-tags sidebar-list list-unstyled">
+
+							<li class="tags-item">
+								@Html.ActionLink("Tên sản phẩm (A-Z)", "ProductByCategory", new { sortProperty = "TenSP", sortOrder = "asc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Tên sản phẩm (Z-A)", "ProductByCategory", new { sortProperty = "TenSP", sortOrder = "desc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Cũ nhất", "ProductByCategory", new { sortProperty = "NgayNhap", sortOrder = "asc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Mới nhất", "ProductByCategory", new { sortProperty = "NgayNhap", sortOrder = "desc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Giá giảm dần", "ProductByCategory", new { sortProperty = "GiaSP", sortOrder = "desc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Giá tăng dần", "ProductByCategory", new { sortProperty = "GiaSP", sortOrder = "asc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+							<li class="tags-item">
+								@Html.ActionLink("Bán chạy nhất", "ProductByCategory", new { sortProperty = "GiaSP", sortOrder = "desc", searchString = ViewBag.Keyword, categoryID = ViewBag.id, subCategories = ViewBag.Subject })
+							</li>
+						</ul>
+					</div>
+
+					<div class="widgets widget-price-filter">
+						<h5 class="widget-title">Lọc theo giá</h5>
+						<ul class="product-tags sidebar-list list-unstyled slidecontainer">
+							@using (Html.BeginForm("ProductByCategory", "Product", FormMethod.Get, new { @class = "d-flex", id = "filterForm" }))
+							{
+								<div class="filter-container" style="margin:auto">
+									<input style="width:300px" type="range" class="slider" id="myRange" name="priceRange" min="100000" max="1000000" step="100000" value="@ViewBag.PriceRange" oninput="updatePriceValue(this.value)" />
+									<div class="hide">@ViewBag.PriceRange</div>
+									<div style="font-size:medium; margin:0px;">Giá: 100.000đ -&nbsp;<span id="demo"></span></div>
+									<div class="tags-item">
+										<input type="submit" value="Áp dụng" class="btn btn-dark">
+									</div>
+								</div>
+								@Html.Hidden("categoryID", (object)ViewBag.id)
+
+							}
+						</ul>
+					</div>
+				</div>
+			</aside>
+
+		</div>
+	</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	$(document).ready(function () {
+		// Attach a change event handler to the category dropdown
+		$('#categoryDropdown').change(function () {
+			// Trigger form submission when the dropdown changes
+			$('#filterForm').submit();
+		});
+	});
+
+</script>
+<script>
+	var slider = document.getElementById("myRange");
+	var output = document.getElementById("demo");
+
+	// Hiển thị giá trị thanh trượt mặc định
+	updateOutput(slider.value);
+
+	// Cập nhật giá trị thanh trượt hiện tại (mỗi khi bạn kéo tay cầm thanh trượt)
+	slider.oninput = function () {
+		updateOutput(this.value);
+	}
+
+	function updateOutput(value) {
+		// Custom formatting logic for currency display
+		// Replace this with your own formatting logic if needed
+		var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+		output.innerHTML = formattedValue;
+	}
+</script>
+<style>
+	.filter-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+</style>
